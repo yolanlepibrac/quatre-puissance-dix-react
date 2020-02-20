@@ -1,47 +1,47 @@
-import React, { Component } from "react";
-import Counter from "./Counter";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import Dashboard from "./Dashboard";
+import GameInterface from "./GameInterface";
+import YolanHeader from "./YolanHeader";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-export default class MyApp extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+function MyApp() {
+  const [currentGame, setCurrentGame] = useState({});
+  let history = useHistory();
+
+  function navigateGame(game) {
+    setCurrentGame(game);
+    history.push("/game");
   }
 
-  componentDidMount = () => {
-    console.log("mount");
-  };
+  function quitGame() {
+    history.push("/");
+  }
 
-  click = e => {
-    console.log("clack");
-    if (e === 2) {
-      console.log("2");
-    } else {
-      console.log("else");
-    }
-  };
-
-  doubleCick = () => {
-    if ("e" === "b") {
-      console.log("d");
-      console.log("im the world");
-    }
-  };
-
-  newClick = () => {
-    console.log("a");
-    console.log("b");
-    console.log("c");
-    console.log("d");
-  };
-
-  render() {
-    return (
-      <div id="appContainer">
-        <div className="MyButton" onClick={this.click}>
-          My App
-        </div>
-        <Counter />
+  return (
+    <div id="appContainer">
+      <YolanHeader
+        className="MyButton"
+        backgroundColor="rgba(132,123,231,1)"
+        height={50}
+      >
+        Quatre Puissance Dix
+      </YolanHeader>
+      <div style={{ height: "calc( 100vh - 50px )" }}>
+        <Switch>
+          <Route exact path="/">
+            <Dashboard navigateGame={navigateGame}></Dashboard>
+          </Route>
+          <Route path="/game">
+            <GameInterface
+              game={currentGame}
+              quitGame={quitGame}
+            ></GameInterface>
+          </Route>
+        </Switch>
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+export default MyApp;
