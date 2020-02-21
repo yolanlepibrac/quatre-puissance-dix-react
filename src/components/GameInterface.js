@@ -234,21 +234,46 @@ function CoordinatePicker(props) {
   return (
     <div style={{ display: "flex" }}>
       {arrayOfCoordinate.map((dimension, numero) => {
+        let selected = props.canvasAxes.includes(numero);
+        let active = selected || props.canvasAxes.length < 3;
+        let backgroundColor1 = active
+          ? "rgba(200,100,180,1)"
+          : "rgba(235,235,235,1)";
+        let backgroundColor2 = active
+          ? "rgba(200,200,200,1)"
+          : "rgba(200,200,200,1)";
+        let color = active ? "rgba(80, 87, 57,1)" : "rgba(180,180,180,1)";
+        let border = selected ? "1px solid #4e6096" : "0px solid #4e6096";
         return (
-          <button
-            disabled={
-              !props.canvasAxes.includes(numero) && props.canvasAxes.length >= 3
-            }
+          <div
             style={{
               width: "100%",
-              backgroundColor: props.canvasAxes.includes(numero)
-                ? "rgba(200,200,0)"
-                : "rgba(235,235,235)"
+              height: 20,
+              boxShadow: active
+                ? "0px 1px 0px 0px #1c1b18"
+                : "0px 0px 0px 0px #1c1b18",
+              borderRadius: 4,
+              border: border,
+              background:
+                "linear-gradient(to bottom, " +
+                backgroundColor1 +
+                " 5%, " +
+                backgroundColor2 +
+                "100%)",
+              display: "inline-block",
+              cursor: active ? "pointer" : null,
+              color: color,
+              fontFamily: "Arial",
+              fontSize: 14,
+              fontWeight: "bold",
+              margin: 2,
+              textDecoration: "none",
+              textShadow: "0px 1px 0px #ffffff"
             }}
-            onClick={() => props.toggleAxis(numero)}
+            onClick={() => active && props.toggleAxis(numero)}
           >
             {dimension}
-          </button>
+          </div>
         );
       })}
     </div>

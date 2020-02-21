@@ -22,8 +22,8 @@ export default function CanvasContent(props) {
         indexDim2++
       ) {
         tab.push([
-          [-1, indexDim1, indexDim2],
-          [gameHelper.sizeMap(props.game.dimension) + 1, indexDim1, indexDim2]
+          [0, indexDim1, indexDim2],
+          [gameHelper.sizeMap(props.game.dimension), indexDim1, indexDim2]
         ]);
       }
     }
@@ -38,8 +38,8 @@ export default function CanvasContent(props) {
         indexDim2++
       ) {
         tab.push([
-          [indexDim1, -1, indexDim2],
-          [indexDim1, gameHelper.sizeMap(props.game.dimension) + 1, indexDim2]
+          [indexDim1, 0, indexDim2],
+          [indexDim1, gameHelper.sizeMap(props.game.dimension), indexDim2]
         ]);
       }
     }
@@ -54,8 +54,8 @@ export default function CanvasContent(props) {
         indexDim2++
       ) {
         tab.push([
-          [indexDim1, indexDim2, -1],
-          [indexDim1, indexDim2, gameHelper.sizeMap(props.game.dimension) + 1]
+          [indexDim1, indexDim2, 0],
+          [indexDim1, indexDim2, gameHelper.sizeMap(props.game.dimension)]
         ]);
       }
     }
@@ -94,6 +94,10 @@ export default function CanvasContent(props) {
       {loopAllVect().map(vect2 => {
         return <Line point0={vect2[0]} point1={vect2[1]}></Line>;
       })}
+      <GridPlane
+        size={gameHelper.sizeMap(props.game.dimension)}
+        dimension={props.game.dimension}
+      />
       <orbitControls args={[camera, domElement]} />
     </>
   );
@@ -127,3 +131,65 @@ function SpherePosition(props) {
     : 0;
   return <Sphere position={coordinatesInSpace} color={props.color} />;
 }
+
+const GridPlane = props => {
+  let tab = [];
+  for (let index = 0; index <= gameHelper.sizeMap(props.dimension); index++) {
+    tab.push({
+      rotation: [0, 0, 1],
+      deplacement: [props.size / 2, props.size / 2, index]
+    });
+  }
+  for (let index = 0; index <= gameHelper.sizeMap(props.dimension); index++) {
+    tab.push({
+      rotation: [0, 1, 0],
+      deplacement: [index, props.size / 2, props.size / 2]
+    });
+  }
+  for (let index = 0; index <= gameHelper.sizeMap(props.dimension); index++) {
+    tab.push({
+      rotation: [1, 0, 0],
+      deplacement: [props.size / 2, index, props.size / 2]
+    });
+  }
+  return tab.map(plane => {
+    return (
+      <Plane
+        rotation={plane.rotation}
+        deplacement={plane.deplacement}
+        size={props.size}
+      />
+    );
+  });
+};
+
+const Plane = props => {
+  return (
+    <mesh
+      position={[
+        props.deplacement[0],
+        props.deplacement[1],
+        props.deplacement[2]
+      ]}
+      quaternion={new THREE.Quaternion().setFromAxisAngle(
+        new THREE.Vector3(
+          props.rotation[0],
+          props.rotation[1],
+          props.rotation[2]
+        ),
+        Math.PI / 2
+      )}
+    >
+      <planeBufferGeometry
+        attach="geometry"
+        args={[props.size, props.size, 32, 32]}
+      />
+      <meshStandardMaterial
+        attach="material"
+        transparent={true}
+        opacity={0.2}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
+  );
+};

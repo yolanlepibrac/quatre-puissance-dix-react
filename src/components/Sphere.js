@@ -27,8 +27,7 @@ export default function Sphere(props) {
       <meshStandardMaterial
         attach="material"
         color={hovered ? "hotpink" : props.color}
-        opacity={0.5}
-        transparent
+        opacity={1}
       />
     </mesh>
   );
