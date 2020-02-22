@@ -247,7 +247,7 @@ function letterArray(dimension) {
 
 const CoordinatePicker = props => {
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", marginBottom: 20 }}>
       {letterArray(props.dimension).map((dimension, numero) => {
         return (
           <CoordinateButton
@@ -263,9 +263,9 @@ const CoordinatePicker = props => {
 };
 
 function CoordinateButton(props) {
+  let axeNumero = props.canvasAxes.sort().indexOf(props.numero);
   let selected = props.canvasAxes.includes(props.numero);
   let active = selected || props.canvasAxes.length < 3;
-  let axeNumero = props.canvasAxes.sort().indexOf(props.numero);
   let backgroundColor =
     axeNumero === 2
       ? Constantes.colorAxe3.color1
@@ -281,7 +281,7 @@ function CoordinateButton(props) {
   let background = selected
     ? "linear-gradient(to bottom, " + backgroundColor + " 5%,  " + backgroundColor2 + " 100%)"
     : "linear-gradient(to bottom, rgba(235,235,235,1) 5%,  rgba(200,200,200,1) 100%)";
-  let color = active ? "rgba(80, 87, 57,1)" : "rgba(180,180,180,1)";
+  let color = selected ? "rgba(235, 235, 235,1)" : active ? "rgba(100, 100, 100,1)" : "rgba(180,180,180,1)";
 
   return (
     <div
@@ -289,7 +289,7 @@ function CoordinateButton(props) {
       style={{
         width: "100%",
         height: 20,
-        boxShadow: active ? "0px 1px 0px 0px #1c1b18" : "0px 0px 0px 0px #1c1b18",
+        boxShadow: active ? "0px 1px 0px 0px #999999" : "0px 0px 0px 0px #1c1b18",
         borderRadius: 4,
         background: background,
         display: "inline-block",
@@ -300,7 +300,7 @@ function CoordinateButton(props) {
         fontWeight: "bold",
         margin: 2,
         textDecoration: "none",
-        textShadow: "0px 1px 0px #ffffff"
+        textShadow: active ? "0px 0px 1px #888888" : "0px 1px 0px #ffffff"
       }}
       onClick={() => active && props.toggleAxis(props.numero)}
     >
