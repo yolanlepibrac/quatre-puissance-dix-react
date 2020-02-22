@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import GameInterface from "./GameInterface";
+import Connect from "./Connect";
 import YolanHeader from "./YolanHeader";
 import { Switch, Route } from "react-router-dom";
 
@@ -20,23 +21,19 @@ function MyApp() {
 
   return (
     <div id="appContainer">
-      <YolanHeader
-        className="MyButton"
-        backgroundColor="rgba(132,123,231,1)"
-        height={50}
-      >
+      <YolanHeader className="MyButton" backgroundColor="rgba(132,123,231,1)" height={50}>
         Quatre Puissance Dix
       </YolanHeader>
-      <div style={{ height: "calc( 100vh - 50px )" }}>
+      <div style={{ height: "calc( 100vh - 50px )", display: "flex", justifyContent: "center", alignItems: "center" }}>
         <Switch>
           <Route exact path="/">
             <Dashboard navigateGame={navigateGame}></Dashboard>
           </Route>
+          <Route path="/login">
+            <Connect></Connect>
+          </Route>
           <Route path="/game">
-            <GameInterface
-              game={currentGame}
-              quitGame={quitGame}
-            ></GameInterface>
+            <GameInterface game={currentGame} quitGame={quitGame}></GameInterface>
           </Route>
         </Switch>
       </div>

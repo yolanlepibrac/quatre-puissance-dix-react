@@ -11,7 +11,8 @@ export default function GameInterface(props) {
   const [id] = useState(1);
   const [game, setGame] = useState(props.game);
   const [canvasAxes, setCanvasAxes] = useState([0, 1, props.game.dimension - 1]);
-  const [hoveredBoules, setHoveredBoules] = useState([]);
+  const [hoveredBoules0, setHoveredBoules0] = useState([]);
+  const [hoveredBoules1, setHoveredBoules1] = useState([]);
 
   const [stateTest, setStateTest] = useState(0);
 
@@ -132,18 +133,18 @@ export default function GameInterface(props) {
     setStateTest(stateTest + 1);
   }
 
-  function setHover(position, bool) {
-    let hoveredBoulesTmp = hoveredBoules;
+  function setHover(key, player, bool) {
+    let hoveredBoulesTmp = player === 0 ? hoveredBoules0.slice() : hoveredBoules1.slice();
     if (bool) {
-      hoveredBoulesTmp.push(position);
+      hoveredBoulesTmp.push(key);
     } else {
-      for (let index = 0; index < hoveredBoulesTmp.length; index++) {
-        if (vectorHelper.vectorEqual(hoveredBoulesTmp[index], position)) {
-          hoveredBoulesTmp.splice(index, 1);
-        }
-      }
+      hoveredBoulesTmp.splice(hoveredBoulesTmp.indexOf(key), 1);
     }
-    setHoveredBoules([...hoveredBoules, hoveredBoulesTmp]);
+    if (player === 0) {
+      setHoveredBoules0(hoveredBoulesTmp);
+    } else {
+      setHoveredBoules1(hoveredBoulesTmp);
+    }
   }
 
   return (
@@ -178,20 +179,21 @@ export default function GameInterface(props) {
         <ColumnPlayer
           name={"Player 1"}
           tabOfVectors={game.vectors1}
-          hoveredBoules={hoveredBoules}
+          hoveredBoules={hoveredBoules0}
           color={Constantes.colorPlayer1}
         ></ColumnPlayer>
         <ColumnPlayer
           name={"Player 2"}
           tabOfVectors={game.vectors2}
-          hoveredBoules={hoveredBoules}
+          hoveredBoules={hoveredBoules1}
           color={Constantes.colorPlayer2}
         ></ColumnPlayer>
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            width: "50%"
+            width: "50%",
+            position: "relative"
           }}
         >
           <CoordinatePicker
@@ -211,7 +213,7 @@ export default function GameInterface(props) {
             <CanvasContent
               game={game}
               canvasAxes={canvasAxes}
-              setHover={(position, bool) => setHover(position, bool)}
+              setHover={(key, player, bool) => setHover(key, player, bool)}
             />
           </Canvas>
           <div
@@ -235,23 +237,16 @@ export default function GameInterface(props) {
   );
 }
 
-function letterArray(dimension) {
-  let arrayOfCoordinate = [];
-  let positionLetter = "z".charCodeAt(0);
-  for (let index = dimension - 1; index >= 0; index--) {
-    arrayOfCoordinate[index] = String.fromCharCode(positionLetter);
-    positionLetter--;
-  }
-  return arrayOfCoordinate;
-}
-
 const CoordinatePicker = props => {
   return (
-    <div style={{ display: "flex", marginBottom: 20 }}>
-      {letterArray(props.dimension).map((dimension, numero) => {
+    <div
+      style={{ display: "flex", marginBottom: 20, position: "absolute", top: 0, left: 0, width: "100%", zIndex: 1000 }}
+    >
+      {gameHelper.letterArray(props.dimension).map((dimension, numero) => {
         return (
           <CoordinateButton
             numero={numero}
+            key={numero}
             toggleAxis={() => props.toggleAxis(numero)}
             dimension={dimension}
             canvasAxes={props.canvasAxes}

@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import vectorHelper from "./vectorHelper";
 
+import gameHelper from "./gameHelper";
+
 export default function ColumnPlayer(props) {
   return (
     <div
@@ -17,19 +19,25 @@ export default function ColumnPlayer(props) {
         boxShadow: "2px 2px 2px 1px rgba(100, 100, 100, 0.7)"
       }}
     >
-      <div style={{ marginBottom: 20 }}>{props.name}</div>
+      <div style={{ marginBottom: 10 }}>{props.name}</div>
+      <div style={{ width: "100%", display: "flex", flexDirection: "row", marginBottom: 10 }}>
+        {props.tabOfVectors &&
+          props.tabOfVectors[0] &&
+          gameHelper.letterArray(props.tabOfVectors[0].length).map((dimension, numero) => {
+            return (
+              <div key={numero} style={{ width: "100%", fontWeight: "bold" }}>
+                {dimension}
+              </div>
+            );
+          })}
+      </div>
       {props.tabOfVectors &&
         props.tabOfVectors.map((vector, key) => {
           return (
             <div
               key={key}
               style={{
-                backgroundColor: vectorHelper.vectorContain(
-                  props.hoveredBoules,
-                  vector
-                )
-                  ? props.color
-                  : "white",
+                backgroundColor: props.hoveredBoules.includes(key) ? props.color : "white",
                 display: "flex",
                 flexDirection: "row",
                 height: 40
@@ -37,10 +45,7 @@ export default function ColumnPlayer(props) {
             >
               {vector.map((coordinate, key) => {
                 return (
-                  <div
-                    key={key}
-                    style={{ width: "100%", flexDirection: "row" }}
-                  >
+                  <div key={key} style={{ width: "100%", flexDirection: "row" }}>
                     {coordinate}
                   </div>
                 );

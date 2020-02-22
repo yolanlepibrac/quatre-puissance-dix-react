@@ -22,12 +22,13 @@ export default function CanvasContent(props) {
           return (
             <SpherePosition
               key={key}
+              index={key}
               position={vector}
               canvasAxes={props.canvasAxes}
               color={Constantes.colorPlayer1}
               hoveredColor={"rgba(255, 105, 180,1)"}
               offset={0.01}
-              setHover={(position, bool) => props.setHover(position, bool)}
+              setHover={(key, bool) => props.setHover(key, 0, bool)}
             />
           );
         })}
@@ -36,12 +37,13 @@ export default function CanvasContent(props) {
           return (
             <SpherePosition
               key={key}
+              index={key}
               position={vector}
               canvasAxes={props.canvasAxes}
               color={Constantes.colorPlayer2}
               hoveredColor={"rgba(255, 174, 0,1)"}
               offset={-0.01}
-              setHover={(position, bool) => props.setHover(position, bool)}
+              setHover={(key, bool) => props.setHover(key, 1, bool)}
             />
           );
         })}
@@ -190,8 +192,8 @@ function SpherePosition(props) {
       position={coordinatesInSpace}
       color={props.color}
       hoveredColor={props.hoveredColor}
-      positionAllDimensions={props.position}
-      setHover={(position, bool) => props.setHover(position, bool)}
+      index={props.index}
+      setHover={(key, bool) => props.setHover(key, bool)}
     />
   );
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useFrame } from "react-three-fiber";
 
 export default function Sphere(props) {
@@ -9,13 +9,13 @@ export default function Sphere(props) {
   const [hovered, setHover] = useState(false);
   const [active, setActive] = useState(false);
 
-  function setHoverFunction(bool) {
+  function setHoverFunction(index, bool) {
     setHover(bool);
-    props.setHover(props.positionAllDimensions, bool);
+    //props.setHover(index, bool);
   }
 
   // Rotate mesh every frame, this is outside of React without overhead
-  useFrame(() => (mesh.current.rotation.x = mesh.current.rotation.y += 0.01));
+  //useFrame(() => (mesh.current.rotation.x = mesh.current.rotation.y += 0.01));
 
   return (
     <mesh
@@ -24,15 +24,11 @@ export default function Sphere(props) {
       scale={active ? [1.3, 1.3, 1.3] : [1.2, 1.2, 1.2]}
       position={props.position}
       onClick={e => setActive(!active)}
-      onPointerOver={e => setHoverFunction(true)}
-      onPointerOut={e => setHoverFunction(false)}
+      onPointerOver={e => setHoverFunction(props.index, true)}
+      onPointerOut={e => setHoverFunction(props.index, false)}
     >
       <sphereGeometry attach="geometry" args={[0.4, 16, 16]} />
-      <meshStandardMaterial
-        attach="material"
-        color={hovered ? props.hoveredColor : props.color}
-        opacity={1}
-      />
+      <meshStandardMaterial attach="material" color={hovered ? props.hoveredColor : props.color} opacity={1} />
     </mesh>
   );
 }
