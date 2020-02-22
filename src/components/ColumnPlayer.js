@@ -1,5 +1,5 @@
-import ReactDOM from "react-dom";
-import React, { useRef, useState } from "react";
+import React, { useEffect } from "react";
+import vectorHelper from "./vectorHelper";
 
 export default function ColumnPlayer(props) {
   return (
@@ -19,18 +19,28 @@ export default function ColumnPlayer(props) {
     >
       <div style={{ marginBottom: 20 }}>{props.name}</div>
       {props.tabOfVectors &&
-        props.tabOfVectors.map(vector => {
+        props.tabOfVectors.map((vector, key) => {
           return (
             <div
+              key={key}
               style={{
+                backgroundColor: vectorHelper.vectorContain(
+                  props.hoveredBoules,
+                  vector
+                )
+                  ? props.color
+                  : "white",
                 display: "flex",
                 flexDirection: "row",
                 height: 40
               }}
             >
-              {vector.map(coordinate => {
+              {vector.map((coordinate, key) => {
                 return (
-                  <div style={{ width: "100%", flexDirection: "row" }}>
+                  <div
+                    key={key}
+                    style={{ width: "100%", flexDirection: "row" }}
+                  >
                     {coordinate}
                   </div>
                 );

@@ -50,9 +50,7 @@ export default class MyApp extends Component {
     };
   }
 
-  componentDidMount = () => {
-    console.log("mount");
-  };
+  componentDidMount = () => {};
 
   navigateGame = game => {
     this.props.navigateGame(game);

@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import GameInterface from "./GameInterface";
 import YolanHeader from "./YolanHeader";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 function MyApp() {
   const [currentGame, setCurrentGame] = useState({});

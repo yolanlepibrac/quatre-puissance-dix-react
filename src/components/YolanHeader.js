@@ -38,7 +38,7 @@ export default class YolanHeader extends Component {
           {this.state.pageName}
         </div>
         <a
-          href=""
+          href="/"
           style={{
             fontSize: this.props.fontSize,
             textDecoration: "none",
