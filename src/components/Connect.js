@@ -68,9 +68,9 @@ const Register = props => {
     if (password !== cpassword) {
       alert("password and confirmation does not match");
     }
-    API.register(email, username, password).then(data => {
+    API.register(email, username, password); /* .then(data => {
       console.log(data);
-    });
+    }); */
   }
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>

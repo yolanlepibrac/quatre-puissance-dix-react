@@ -6,11 +6,14 @@ const headers = {
   "Access-Control-Allow-Origin": "Origin"
 };
 
-const burl = "http://localhost:7000";
+const burl = "https://quatre-puissance-dix.herokuapp.com";
 
 module.exports = {
   login: function(email, password) {
-    return axios.post(burl + "/users", { email: email, password: password }, { headers: headers });
+    //return axios.get(burl + "/users", { email: email, password: password }, { headers: headers });
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://quatre-puissance-dix.herokuapp.com/users");
+    xhr.send(null);
   },
   register: function(email, username, password) {
     return axios.post(
