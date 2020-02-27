@@ -6,6 +6,8 @@ import vectorHelper from "./vectorHelper";
 import gameHelper from "./gameHelper";
 import Constantes from "./Constantes";
 
+import socketIOClient from "socket.io-client";
+
 export default function GameInterface(props) {
   const [currentVector, setCurrentVector] = useState(initializeVector(props.game.dimensions - 1));
   const [game, setGame] = useState(props.game);
@@ -91,10 +93,29 @@ export default function GameInterface(props) {
 
   function addVector(newVect) {
     if (game.player1 === props.user.email) {
-      setGame({ ...game, vector1: game.vectors1.push(newVect) });
+      let newGame = game;
+      newGame.vector1 = game.vectors1.push(newVect);
+      let email = game.player2;
+      sendGame(email, newGame);
+      //setGame({ ...game, vector1: game.vectors1.push(newVect) });
     } else {
+      let newGame = game;
+      newGame.vector1 = game.vectors2.push(newVect);
+      let email = game.player1;
+      sendGame(email, newGame);
       setGame({ ...game, vector2: game.vectors2.push(newVect) });
     }
+  }
+
+  function sendGame(email, game) {
+    const socket = socketIOClient(Constantes.server);
+    const message = {
+      email,
+      game
+    };
+    console.log(email);
+    console.log(game);
+    socket.emit("msgToServer", message);
   }
 
   function checkWin(vector, myVectors) {
