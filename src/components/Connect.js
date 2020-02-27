@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import API from "./API";
-import { resolve } from "dns";
 
-export default function Connect() {
+export default function Connect(props) {
   const [panel, setPanel] = useState(0);
 
   return (
@@ -31,7 +30,11 @@ export default function Connect() {
             Register
           </div>
         </div>
-        {panel === 0 ? <Login /> : <Register />}
+        {panel === 0 ? (
+          <Login navigateHome={data => props.navigateHome(data)} />
+        ) : (
+          <Register navigateHome={data => props.navigateHome(data)} />
+        )}
       </div>
     </div>
   );
@@ -42,9 +45,22 @@ const Login = props => {
   const [password, setPassword] = useState("");
 
   function sendLogin() {
-    API.login(email, password).then(data => {
-      console.log(data);
-    });
+    API.login(email, password)
+      .then(dataUser => {
+        console.log(dataUser);
+        API.getGames(dataUser.data.user.games)
+          .then(dataGames => {
+            console.log(dataGames);
+            props.navigateHome({ user: dataUser.data.user, games: dataGames.data.games });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+        alert("Impossible to connect");
+      });
   }
 
   return (
@@ -53,7 +69,7 @@ const Login = props => {
       <input onChange={e => setEmail(e.target.value)} value={email} />
       <label>password</label>
       <input onChange={e => setPassword(e.target.value)} value={password} />
-      <div onClick={sendLogin}>Validate</div>
+      <div onClick={() => sendLogin()}>Validate</div>
     </div>
   );
 };
@@ -68,8 +84,9 @@ const Register = props => {
     if (password !== cpassword) {
       alert("password and confirmation does not match");
     }
-    API.register(email, username, password).then(data => {
-      console.log(data);
+    API.register(email, password, username).then(dataUser => {
+      console.log(dataUser);
+      props.navigateHome({ user: dataUser, games: [] });
     });
   }
   return (
@@ -82,7 +99,7 @@ const Register = props => {
       <input onChange={e => setPassword(e.target.value)} value={password} />
       <label>cPassword</label>
       <input onChange={e => setCpassword(e.target.value)} value={cpassword} />
-      <div onClick={sendRegister}>Validate</div>
+      <div onClick={() => sendRegister()}>Validate</div>
     </div>
   );
 };

@@ -6,38 +6,79 @@ const headers = {
   "Access-Control-Allow-Origin": "Origin"
 };
 
-const burl = "https://test-mongoose-qpd.herokuapp.com";
+const burl = "https://quatre-puissance-dix.herokuapp.com";
+//const burl = "http://localhost:7000";
 
 module.exports = {
-  login: function(email, password) {
-    console.log(email);
+  createGame: function(player1, player2, dimensions) {
     return axios.post(
-      burl + "/user/login",
-      { email: email, password: password },
+      burl + "/games/new",
+      {
+        id: this.createToken(),
+        player1: player1,
+        player2: player2,
+        vectors1: [],
+        vectors2: [],
+        dimensions: dimensions,
+        player1ToPlay: true,
+        finish: false,
+        winner1: undefined
+      },
       { headers: headers }
     );
-    /* var xhttp = new XMLHttpRequest();
-    try {
-      xhttp.onreadystatechange = function() {
-        console.log(xhttp);
-        if (xhttp.readyState == 4 && xhttp.status == 0) {
-          alert("Unknown Error Occured. Server response not received.");
-        }
-      };
-      xhttp.open("POST", "http://localhost:7000/users", true);
-      xhttp.send();
-    } catch (e) {
-      console.log("catch", e);
-    }
-    return new Promise((resolve, res) => {
-      resolve();
-    }); */
   },
-  register: function(email, username, password) {
+  login: function(email, password) {
     return axios.post(
-      burl + "/getHello",
-      { email: email, password: password, username: username },
+      burl + "/users/login",
+      {
+        email: email,
+        password: password
+      },
+      /* { email: "john", password: "changeme" }, */
       { headers: headers }
     );
+  },
+  getGames: function(tabOfGames) {
+    return axios.post(
+      burl + "/games/getUserGames",
+      {
+        games: tabOfGames
+      },
+      { headers: headers }
+    );
+  },
+  register: function(email, password, name) {
+    return axios.post(
+      burl + "/users/register",
+      {
+        id: this.createToken(),
+        name: name,
+        email: email,
+        password: password,
+        games: []
+      },
+      { headers: headers }
+    );
+  },
+  setUserGame: function(userMail, gameID) {
+    return axios.post(
+      burl + "/users/setNewGame",
+      {
+        email: userMail,
+        id: gameID
+      },
+      { headers: headers }
+    );
+  },
+  createToken: function() {
+    var rand = function() {
+      return Math.random()
+        .toString(36)
+        .substr(2); // remove `0.`
+    };
+    var token = function() {
+      return rand() + rand(); // to make it longer
+    };
+    return token();
   }
 };
