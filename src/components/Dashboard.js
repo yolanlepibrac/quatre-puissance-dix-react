@@ -52,26 +52,18 @@ export default function MyApp(props) {
   const [modalNewGame, setModalNewGame] = useState(false);
   const [response, setResponse] = useState(false);
 
-  /* useEffect(() => {
-    // Met à jour le titre du document via l’API du navigateur
-    const socket = socketIOClient("http://localhost/7000");
-    socket.on("chat", data => this.setState({ response: data }));
-  }); */
-
-  function createSocket() {
-    const socket = socketIOClient(Constantes.server);
-    const message = {
-      name: "name",
-      text: "hello"
-    };
-    socket.emit("msgToServer", message);
-  }
-
   useEffect(() => {
     const socket = socketIOClient(Constantes.server);
     console.log(props.user.email);
     socket.on(props.user.email, newGame => {
-      console.log(newGame);
+      console.log(newGame.game.id);
+      for (let index = 0; index < games.length; index++) {
+        if (newGame.game.id == games[index].id) {
+          let newGames = games;
+          newGames[index] = newGame.game;
+          setGames(newGames);
+        }
+      }
     });
   });
 
@@ -85,7 +77,7 @@ export default function MyApp(props) {
       {modalNewGame && (
         <ModalNewGame setModalNewGame={setModalNewGame} player1email={props.user.email} addGame={props.addGame} />
       )}
-      <div style={{ textAlign: "center" }} onClick={createSocket}>
+      <div style={{ textAlign: "center" }}>
         Log socket
         {/* response ? <p>The temperature in Florence is: {response} °F</p> : <p>Loading...</p> */}
       </div>

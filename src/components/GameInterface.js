@@ -103,7 +103,7 @@ export default function GameInterface(props) {
       newGame.vector1 = game.vectors2.push(newVect);
       let email = game.player1;
       sendGame(email, newGame);
-      setGame({ ...game, vector2: game.vectors2.push(newVect) });
+      //setGame({ ...game, vector2: game.vectors2.push(newVect) });
     }
   }
 
