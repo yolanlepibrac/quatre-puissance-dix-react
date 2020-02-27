@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import GameItem from "./GameItem";
 import API from "./API";
 import socketIOClient from "socket.io-client";
+import Constantes from "./Constantes";
 
 const gamesdefault = [
   {
@@ -50,7 +51,6 @@ export default function MyApp(props) {
   const [games, setGames] = useState(props.games);
   const [modalNewGame, setModalNewGame] = useState(false);
   const [response, setResponse] = useState(false);
-  const [endpoint, setEndpoint] = useState("https://quatre-puissance-dix.herokuapp.com");
 
   /* useEffect(() => {
     // Met à jour le titre du document via l’API du navigateur
@@ -59,7 +59,7 @@ export default function MyApp(props) {
   }); */
 
   function createSocket() {
-    const socket = socketIOClient(endpoint);
+    const socket = socketIOClient(Constantes.server);
     const message = {
       name: "name",
       text: "hello"
@@ -68,10 +68,10 @@ export default function MyApp(props) {
   }
 
   useEffect(() => {
-    const socket = socketIOClient(endpoint);
-    socket.on("msgToClient", message => {
-      //this.setState({ response: data });
-      console.log(message);
+    const socket = socketIOClient(Constantes.server);
+    console.log(props.user.email);
+    socket.on(props.user.email, newGame => {
+      console.log(newGame);
     });
   });
 
