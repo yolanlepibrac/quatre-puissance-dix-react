@@ -50,27 +50,27 @@ export default function CanvasContent(props) {
       <GridLine game={props.game} canvasAxes={props.canvasAxes} />
       <GridPlane
         canvasAxes={props.canvasAxes}
-        size={gameHelper.sizeMap(props.game.dimension)}
-        dimension={props.game.dimension}
+        size={gameHelper.sizeMap(props.game.dimensions)}
+        dimensions={props.game.dimensions}
       />
       {props.canvasAxes.length > 0 && (
         <Line
           point0={[0, 0, 0]}
-          point1={[gameHelper.sizeMap(props.game.dimension), 0, 0]}
+          point1={[gameHelper.sizeMap(props.game.dimensions), 0, 0]}
           color={Constantes.colorAxe1.color1}
         ></Line>
       )}
       {props.canvasAxes.length > 1 && (
         <Line
           point0={[0, 0, 0]}
-          point1={[0, gameHelper.sizeMap(props.game.dimension), 0]}
+          point1={[0, gameHelper.sizeMap(props.game.dimensions), 0]}
           color={Constantes.colorAxe2.color1}
         ></Line>
       )}
       {props.canvasAxes.length > 2 && (
         <Line
           point0={[0, 0, 0]}
-          point1={[0, 0, gameHelper.sizeMap(props.game.dimension)]}
+          point1={[0, 0, gameHelper.sizeMap(props.game.dimensions)]}
           color={Constantes.colorAxe3.color1}
         ></Line>
       )}
@@ -82,50 +82,50 @@ export default function CanvasContent(props) {
 function GridLine(props) {
   let tab = [];
   if (props.canvasAxes.length === 3) {
-    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimension); indexDim1++) {
-      for (let indexDim2 = 0; indexDim2 <= gameHelper.sizeMap(props.game.dimension); indexDim2++) {
+    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
+      for (let indexDim2 = 0; indexDim2 <= gameHelper.sizeMap(props.game.dimensions); indexDim2++) {
         tab.push([
           [0, indexDim1, indexDim2],
-          [gameHelper.sizeMap(props.game.dimension), indexDim1, indexDim2]
+          [gameHelper.sizeMap(props.game.dimensions), indexDim1, indexDim2]
         ]);
       }
     }
-    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimension); indexDim1++) {
-      for (let indexDim2 = 0; indexDim2 <= gameHelper.sizeMap(props.game.dimension); indexDim2++) {
+    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
+      for (let indexDim2 = 0; indexDim2 <= gameHelper.sizeMap(props.game.dimensions); indexDim2++) {
         tab.push([
           [indexDim1, 0, indexDim2],
-          [indexDim1, gameHelper.sizeMap(props.game.dimension), indexDim2]
+          [indexDim1, gameHelper.sizeMap(props.game.dimensions), indexDim2]
         ]);
       }
     }
-    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimension); indexDim1++) {
-      for (let indexDim2 = 0; indexDim2 <= gameHelper.sizeMap(props.game.dimension); indexDim2++) {
+    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
+      for (let indexDim2 = 0; indexDim2 <= gameHelper.sizeMap(props.game.dimensions); indexDim2++) {
         tab.push([
           [indexDim1, indexDim2, 0],
-          [indexDim1, indexDim2, gameHelper.sizeMap(props.game.dimension)]
+          [indexDim1, indexDim2, gameHelper.sizeMap(props.game.dimensions)]
         ]);
       }
     }
   }
   if (props.canvasAxes.length === 2) {
-    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimension); indexDim1++) {
+    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
       for (let indexDim2 = 0; indexDim2 <= 1; indexDim2++) {
         tab.push([
           [0, indexDim1, indexDim2],
-          [gameHelper.sizeMap(props.game.dimension), indexDim1, indexDim2]
+          [gameHelper.sizeMap(props.game.dimensions), indexDim1, indexDim2]
         ]);
       }
     }
-    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimension); indexDim1++) {
+    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
       for (let indexDim2 = 0; indexDim2 <= 1; indexDim2++) {
         tab.push([
           [indexDim1, 0, indexDim2],
-          [indexDim1, gameHelper.sizeMap(props.game.dimension), indexDim2]
+          [indexDim1, gameHelper.sizeMap(props.game.dimensions), indexDim2]
         ]);
       }
     }
-    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimension); indexDim1++) {
-      for (let indexDim2 = 0; indexDim2 <= gameHelper.sizeMap(props.game.dimension); indexDim2++) {
+    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
+      for (let indexDim2 = 0; indexDim2 <= gameHelper.sizeMap(props.game.dimensions); indexDim2++) {
         tab.push([
           [indexDim1, indexDim2, 0],
           [indexDim1, indexDim2, 1]
@@ -138,11 +138,11 @@ function GridLine(props) {
       for (let indexDim2 = 0; indexDim2 <= 1; indexDim2++) {
         tab.push([
           [0, indexDim1, indexDim2],
-          [gameHelper.sizeMap(props.game.dimension), indexDim1, indexDim2]
+          [gameHelper.sizeMap(props.game.dimensions), indexDim1, indexDim2]
         ]);
       }
     }
-    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimension); indexDim1++) {
+    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
       for (let indexDim2 = 0; indexDim2 <= 1; indexDim2++) {
         tab.push([
           [indexDim1, 0, indexDim2],
@@ -150,7 +150,7 @@ function GridLine(props) {
         ]);
       }
     }
-    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimension); indexDim1++) {
+    for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
       for (let indexDim2 = 0; indexDim2 <= 1; indexDim2++) {
         tab.push([
           [indexDim1, indexDim2, 0],
@@ -201,21 +201,21 @@ function SpherePosition(props) {
 const GridPlane = props => {
   let tab = [];
   if (props.canvasAxes.length === 3) {
-    for (let index = 0; index <= gameHelper.sizeMap(props.dimension); index++) {
+    for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
         rotation: [0, 0, 1],
         deplacement: [props.size / 2, props.size / 2, index],
         size: [props.size, props.size]
       });
     }
-    for (let index = 0; index <= gameHelper.sizeMap(props.dimension); index++) {
+    for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
         rotation: [0, 1, 0],
         deplacement: [index, props.size / 2, props.size / 2],
         size: [props.size, props.size]
       });
     }
-    for (let index = 0; index <= gameHelper.sizeMap(props.dimension); index++) {
+    for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
         rotation: [1, 0, 0],
         deplacement: [props.size / 2, index, props.size / 2],
@@ -232,14 +232,14 @@ const GridPlane = props => {
         size: [props.size, props.size]
       });
     }
-    for (let index = 0; index <= gameHelper.sizeMap(props.dimension); index++) {
+    for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
         rotation: [0, 1, 0],
         deplacement: [index, props.size / 2, 1 / 2],
         size: [1, props.size]
       });
     }
-    for (let index = 0; index <= gameHelper.sizeMap(props.dimension); index++) {
+    for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
         rotation: [1, 0, 0],
         deplacement: [props.size / 2, index, 1 / 2],
@@ -256,7 +256,7 @@ const GridPlane = props => {
         size: [1, props.size]
       });
     }
-    for (let index = 0; index <= gameHelper.sizeMap(props.dimension); index++) {
+    for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
         rotation: [0, 1, 0],
         deplacement: [index, 1 / 2, 1 / 2],

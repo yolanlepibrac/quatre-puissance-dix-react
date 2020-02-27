@@ -7,18 +7,17 @@ import gameHelper from "./gameHelper";
 import Constantes from "./Constantes";
 
 export default function GameInterface(props) {
-  const [currentVector, setCurrentVector] = useState(initializeVector(props.game.dimension - 1));
-  const [id] = useState(1);
+  const [currentVector, setCurrentVector] = useState(initializeVector(props.game.dimensions - 1));
   const [game, setGame] = useState(props.game);
-  const [canvasAxes, setCanvasAxes] = useState([0, 1, props.game.dimension - 1]);
+  const [canvasAxes, setCanvasAxes] = useState([0, 1, props.game.dimensions - 1]);
   const [hoveredBoules0, setHoveredBoules0] = useState([]);
   const [hoveredBoules1, setHoveredBoules1] = useState([]);
 
   const [stateTest, setStateTest] = useState(0);
 
-  function initializeVector(dimension) {
+  function initializeVector(dimensions) {
     let array = [];
-    for (let index = 0; index < dimension; index++) {
+    for (let index = 0; index < dimensions; index++) {
       array.push(0);
     }
     return array;
@@ -55,31 +54,43 @@ export default function GameInterface(props) {
       let vect = allvect[index].slice();
       vect.pop();
       if (arraysEqual(vect, currentVector)) {
-        vectExisting.push(allvect[index][game.dimension - 1]);
+        vectExisting.push(allvect[index][game.dimensions - 1]);
       }
     }
-    let myVectors = game.players[0] === id ? game.vectors1 : game.vectors2;
+    let myVectors = game.player1 === props.user.email ? game.vectors1 : game.vectors2;
 
     //si au moins 1 vecteur similaire existe
     let valueZ = vectExisting.length > 0 ? Math.max(...vectExisting) + 1 : 0;
-    if (valueZ < gameHelper.sizeMap(game.dimension)) {
+    if (valueZ < gameHelper.sizeMap(game.dimensions)) {
       let vectorToAdd = currentVector.concat(valueZ);
       if (checkWin(vectorToAdd, myVectors)) {
-        alert("You Win");
+        setWin(vectorToAdd);
       } else {
         addVector(vectorToAdd);
       }
     } else {
       alert(
         "Tu ne peux plus ajouter de boules suivant ce vecteur. La limite de " +
-          gameHelper.sizeMap(game.dimension) +
+          gameHelper.sizeMap(game.dimensions) +
           " est atteinte"
       );
     }
   }
 
+  function setWin() {
+    function addVector(newVect) {
+      if (game.player1 === props.user.email) {
+        setGame({ ...game, vector1: game.vectors1.push(newVect), finish: true, winner1: true });
+      } else {
+        setGame({ ...game, vector2: game.vectors2.push(newVect), finish: true, winner1: false });
+      }
+    }
+    alert("You Win");
+    //API.setGameWin(gameWin);
+  }
+
   function addVector(newVect) {
-    if (game.players[0] === id) {
+    if (game.player1 === props.user.email) {
       setGame({ ...game, vector1: game.vectors1.push(newVect) });
     } else {
       setGame({ ...game, vector2: game.vectors2.push(newVect) });
@@ -113,7 +124,7 @@ export default function GameInterface(props) {
           numberAlign++;
           l--;
         }
-        if (numberAlign >= gameHelper.numberToWin(game.dimension)) {
+        if (numberAlign >= gameHelper.numberToWin(game.dimensions)) {
           return true;
         }
       }
@@ -168,10 +179,10 @@ export default function GameInterface(props) {
         >
           retour
         </button>
-        {game.players && (
+        {game.players1 && game.players2 && (
           <div>
-            <div>{game.players[0]}</div>
-            <div>{game.players[1]}</div>
+            <div>{game.players1}</div>
+            <div>{game.players2}</div>
           </div>
         )}
       </div>
@@ -197,7 +208,7 @@ export default function GameInterface(props) {
           }}
         >
           <CoordinatePicker
-            dimension={game.dimension}
+            dimensions={game.dimensions}
             canvasAxes={canvasAxes}
             toggleAxis={toggleAxis}
             stateTest={stateTest}
@@ -216,21 +227,23 @@ export default function GameInterface(props) {
               setHover={(key, player, bool) => setHover(key, player, bool)}
             />
           </Canvas>
-          <div
-            style={{
-              height: "calc( 20vh - 50px )",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              paddingRight: 20
-            }}
-          >
-            <div style={{ display: "flex" }}>
-              <MapCoordinates dimension={game.dimension} setCoordinateValue={setCoordinateValue}></MapCoordinates>
-              <CoordinateZ></CoordinateZ>
+          {game.finish !== true && (
+            <div
+              style={{
+                height: "calc( 20vh - 50px )",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                paddingRight: 20
+              }}
+            >
+              <div style={{ display: "flex" }}>
+                <MapCoordinates dimensions={game.dimensions} setCoordinateValue={setCoordinateValue}></MapCoordinates>
+                <CoordinateZ></CoordinateZ>
+              </div>
+              <button onClick={setVector}>SET VECTOR</button>
             </div>
-            <button onClick={setVector}>SET VECTOR</button>
-          </div>
+          )}
         </div>
       </div>
     </div>
@@ -242,13 +255,13 @@ const CoordinatePicker = props => {
     <div
       style={{ display: "flex", marginBottom: 20, position: "absolute", top: 0, left: 0, width: "100%", zIndex: 1000 }}
     >
-      {gameHelper.letterArray(props.dimension).map((dimension, numero) => {
+      {gameHelper.letterArray(props.dimensions).map((dimensions, numero) => {
         return (
           <CoordinateButton
             numero={numero}
             key={numero}
             toggleAxis={() => props.toggleAxis(numero)}
-            dimension={dimension}
+            dimensions={dimensions}
             canvasAxes={props.canvasAxes}
           ></CoordinateButton>
         );
@@ -299,7 +312,7 @@ function CoordinateButton(props) {
       }}
       onClick={() => active && props.toggleAxis(props.numero)}
     >
-      {props.dimension}
+      {props.dimensions}
     </div>
   );
 }
@@ -307,7 +320,7 @@ function CoordinateButton(props) {
 function MapCoordinates(props) {
   let arrayOfCoordinate = [];
   let positionLetter = "y".charCodeAt(0);
-  for (let index = props.dimension - 2; index >= 0; index--) {
+  for (let index = props.dimensions - 2; index >= 0; index--) {
     arrayOfCoordinate[index] = String.fromCharCode(positionLetter);
     positionLetter--;
   }
@@ -317,7 +330,7 @@ function MapCoordinates(props) {
         key={position}
         setCoordinateValue={value => props.setCoordinateValue(value, position)}
         coordinate={charLetter}
-        dimension={gameHelper.sizeMap(props.dimension)}
+        dimensions={gameHelper.sizeMap(props.dimensions)}
       ></InputCoordinate>
     );
   });
@@ -343,7 +356,7 @@ function InputCoordinate(props) {
       <input
         type="number"
         min="0"
-        max={props.dimension}
+        max={props.dimensions}
         onChange={e => setInputValue(e)}
         style={{ width: "100%" }}
         value={value}

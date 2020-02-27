@@ -26,7 +26,8 @@ export default class YolanHeader extends Component {
           color: "white"
         }}
       >
-        <div
+        <a
+          href="/"
           style={{
             fontFamily: "codelight",
             marginLeft: 50,
@@ -36,9 +37,8 @@ export default class YolanHeader extends Component {
           }}
         >
           {this.state.pageName}
-        </div>
-        <a
-          href="/"
+        </a>
+        <div
           style={{
             fontSize: this.props.fontSize,
             textDecoration: "none",
@@ -47,7 +47,7 @@ export default class YolanHeader extends Component {
           }}
         >
           {this.props.children}
-        </a>
+        </div>
         <div className="menu" style={{ marginRight: 50, width: 10 }}></div>
       </div>
     );

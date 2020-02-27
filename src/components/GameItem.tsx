@@ -3,7 +3,8 @@ import CSS from "csstype";
 
 interface game {
   id: string;
-  players: Array<number>;
+  player1: string;
+  player2: string;
   vectors1: Array<Array<number>>;
   vectors2: Array<Array<number>>;
   player1play: boolean;
@@ -31,17 +32,9 @@ class GameItem extends React.Component<Props, State> {
   };
 
   render() {
-    const play =
-      this.props.game.player1play &&
-      this.state.account.id === this.props.game.players[0]
-        ? true
-        : false;
+    const play = this.props.game.player1play && this.state.account.id === this.props.game.player1 ? true : false;
     return (
-      <div
-        id="containerGameItem"
-        style={{ ...this.props.style, cursor: "pointer" }}
-        onClick={this.props.onClick}
-      >
+      <div id="containerGameItem" style={{ ...this.props.style, cursor: "pointer" }} onClick={this.props.onClick}>
         <div
           style={{
             width: "100",
@@ -51,16 +44,10 @@ class GameItem extends React.Component<Props, State> {
             justifyContent: "space-around"
           }}
         >
-          <div>{this.props.game.players[0]}</div>
-          <div>{this.props.game.players[1]}</div>
+          <div>{this.props.game.player1}</div>
+          <div>{this.props.game.player2}</div>
         </div>
-        <div>
-          {play ? (
-            <div>Play</div>
-          ) : (
-            <div>{"wait for " + this.props.game.players[0] + "to play"}</div>
-          )}
-        </div>
+        <div>{play ? <div>Play</div> : <div>{"wait for " + this.props.game.player2 + "to play"}</div>}</div>
       </div>
     );
   }
