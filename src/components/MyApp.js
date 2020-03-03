@@ -28,12 +28,6 @@ function MyApp() {
     history.push("/home");
   }
 
-  function addGame(game) {
-    let tabOfGames = games;
-    tabOfGames.push(game);
-    setGames(tabOfGames);
-  }
-
   function quitGame() {
     history.push("/home");
   }
@@ -60,6 +54,12 @@ function MyApp() {
     console.log(games);
   }
 
+  function addGame(game) {
+    let tabOfGames = games;
+    tabOfGames.push(game);
+    setGames(tabOfGames);
+  }
+
   function setCurrentGameToState(game) {
     console.log("set current game to state");
     setCurrentGame(game);
@@ -81,13 +81,7 @@ function MyApp() {
           </Route>
           <Route exact path="/home">
             {!connected && <Redirect to="/login"></Redirect>}
-            <Dashboard
-              navigateGame={navigateGame}
-              user={user}
-              games={games}
-              addGame={addGame}
-              setGame={setGamesToState}
-            ></Dashboard>
+            <Dashboard navigateGame={navigateGame} user={user} games={games} setGame={setGamesToState}></Dashboard>
           </Route>
           <Route exact path="/game">
             {!connected && <Redirect to="/login"></Redirect>}
