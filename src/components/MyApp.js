@@ -18,7 +18,6 @@ function MyApp() {
     setCurrentGame(game);
 
     history.push("/game");
-    console.log(currentGame);
   }
 
   function navigateHome(data) {
@@ -52,9 +51,7 @@ function MyApp() {
   }
 
   function setCurrentGameToState(game) {
-    console.log("set current game to state");
     setCurrentGame(game);
-    console.log(currentGame);
   }
 
   return (
