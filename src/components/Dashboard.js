@@ -13,6 +13,7 @@ export default function MyApp(props) {
     socket.on(props.user.email, newGame => {
       props.setGame(newGame);
     });
+    console.log(props.games);
   });
 
   function navigateGame(game) {
@@ -22,9 +23,7 @@ export default function MyApp(props) {
   return (
     <div id="appContainer">
       <button onClick={() => setModalNewGame(true)}>New Game</button>
-      {modalNewGame && (
-        <ModalNewGame setModalNewGame={setModalNewGame} player1email={props.user.email} addGame={props.addGame} />
-      )}
+      {modalNewGame && <ModalNewGame setModalNewGame={setModalNewGame} player1email={props.user.email} />}
       <div style={{ textAlign: "center" }}>
         Log socket
         {/* response ? <p>The temperature in Florence is: {response} °F</p> : <p>Loading...</p> */}
