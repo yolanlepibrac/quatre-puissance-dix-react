@@ -5,7 +5,6 @@ import socketIOClient from "socket.io-client";
 import Constantes from "./Constantes";
 
 export default function MyApp(props) {
-  const [games, setGames] = useState(props.games);
   const [modalNewGame, setModalNewGame] = useState(false);
 
   useEffect(() => {
@@ -28,8 +27,8 @@ export default function MyApp(props) {
         Log socket
         {/* response ? <p>The temperature in Florence is: {response} °F</p> : <p>Loading...</p> */}
       </div>
-      {games.length > 0 &&
-        games.map((game, key) => {
+      {props.games.length > 0 &&
+        props.games.map((game, key) => {
           return (
             <GameItem
               user={props.user}

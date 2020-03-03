@@ -47,17 +47,8 @@ function MyApp() {
       }
     }
     if (!existingGame) {
-      let newGames = games;
-      newGames.push(newGame.game);
-      setGames(newGames);
+      setGames([...games, newGame.game]);
     }
-    console.log(games);
-  }
-
-  function addGame(game) {
-    let tabOfGames = games;
-    tabOfGames.push(game);
-    setGames(tabOfGames);
   }
 
   function setCurrentGameToState(game) {
