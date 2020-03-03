@@ -117,7 +117,7 @@ export default function GameInterface(props) {
   }
 
   function addVector(newVect) {
-    let newGame = props.game;
+    let newGame = { ...props.game };
     if (isPlayer1()) {
       newGame.vector1 = props.game.vectors1.push(newVect);
     } else {
@@ -132,6 +132,9 @@ export default function GameInterface(props) {
     API.updateGame(newGame)
       .then(response => {
         console.log(response);
+        console.log(email1);
+        console.log(email2);
+        console.log(newGame);
         sendGame(email1, email2, newGame);
       })
       .catch(error => {
