@@ -20,8 +20,6 @@ export default function GameInterface(props) {
   useEffect(() => {
     const socket = socketIOClient(Constantes.server);
     socket.on(props.user.email, newGame => {
-      console.log(props.game.id);
-      console.log(newGame.game.id);
       if (newGame.game.id === props.game.id) {
         props.setCurrentGame(newGame.game);
       }
@@ -242,13 +240,13 @@ export default function GameInterface(props) {
       </div>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <ColumnPlayer
-          name={"Player 1"}
+          name={"Player 1 : " + props.game.player1}
           tabOfVectors={props.game.vectors1}
           hoveredBoules={hoveredBoules0}
           color={Constantes.colorPlayer1}
         ></ColumnPlayer>
         <ColumnPlayer
-          name={"Player 2"}
+          name={"Player 2 : " + props.game.player2}
           tabOfVectors={props.game.vectors2}
           hoveredBoules={hoveredBoules1}
           color={Constantes.colorPlayer2}

@@ -12,7 +12,6 @@ export default function MyApp(props) {
     socket.on(props.user.email, newGame => {
       props.setGame(newGame);
     });
-    console.log(props.games);
   });
 
   function navigateGame(game) {
