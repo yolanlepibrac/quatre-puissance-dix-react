@@ -119,35 +119,33 @@ export default function GameInterface(props) {
   }
 
   function addVector(newVect) {
-    let email;
     let newGame = props.game;
     if (isPlayer1()) {
       newGame.vector1 = props.game.vectors1.push(newVect);
-      email = props.game.player2;
     } else {
       newGame.vector1 = props.game.vectors2.push(newVect);
-      email = props.game.player1;
     }
-    updateGame(email, newGame);
+    updateGame(props.game.player1, props.game.player2, newGame);
   }
 
-  function updateGame(email, game) {
+  function updateGame(email1, email2, game) {
     let newGame = game;
     newGame.player1ToPlay = !game.player1ToPlay;
     API.updateGame(newGame)
       .then(response => {
         console.log(response);
-        sendGame(email, newGame);
+        sendGame(email1, email2, newGame);
       })
       .catch(error => {
         console.log(error);
       });
   }
 
-  function sendGame(email, game) {
+  function sendGame(email1, email2, game) {
     const socket = socketIOClient(Constantes.server);
     const message = {
-      email,
+      email1,
+      email2,
       game
     };
     socket.emit("msgToServer", message);
