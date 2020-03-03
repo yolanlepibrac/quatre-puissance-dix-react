@@ -111,7 +111,7 @@ export default function GameInterface(props) {
   }
 
   function playerToPlay() {
-    if ((isPlayer1 && props.game.player1ToPlay) || (!isPlayer1 && !props.game.player1ToPlay)) {
+    if ((isPlayer1() && props.game.player1ToPlay) || (!isPlayer1() && !props.game.player1ToPlay)) {
       return true;
     } else {
       return false;
