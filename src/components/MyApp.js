@@ -43,14 +43,21 @@ function MyApp() {
   }
 
   function setGamesToState(newGame) {
+    let existingGame = false;
     for (let index = 0; index < games.length; index++) {
       if (newGame.game.id == games[index].id) {
         let newGames = games;
         newGames[index] = newGame.game;
         setGames(newGames);
-        console.log(games);
+        existingGame = true;
       }
     }
+    if (!existingGame) {
+      let newGames = games;
+      newGames.push(newGame.game);
+      setGames(newGames);
+    }
+    console.log(games);
   }
 
   function setCurrentGameToState(game) {
