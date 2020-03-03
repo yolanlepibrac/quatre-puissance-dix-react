@@ -1,6 +1,6 @@
 export default {
   sizeMap: function(dimension) {
-    return 7;
+    return dimension + 5;
   },
   numberToWin: function(dimension) {
     return dimension + 2;
