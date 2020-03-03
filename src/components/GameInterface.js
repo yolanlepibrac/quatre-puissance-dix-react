@@ -16,13 +16,14 @@ export default function GameInterface(props) {
   const [hoveredBoules1, setHoveredBoules1] = useState([]);
 
   const [stateTest, setStateTest] = useState(0);
+  const socket = socketIOClient(Constantes.server);
 
   useEffect(() => {
-    const socket = socketIOClient(Constantes.server);
     socket.on(props.user.email, newGame => {
       if (newGame.game.id === props.game.id) {
         props.setCurrentGame(newGame.game);
       }
+      console.log("received");
     });
   });
 
@@ -143,7 +144,6 @@ export default function GameInterface(props) {
   }
 
   function sendGame(email1, email2, game) {
-    const socket = socketIOClient(Constantes.server);
     const message = {
       email1,
       email2,
