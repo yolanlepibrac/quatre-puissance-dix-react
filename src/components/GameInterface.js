@@ -150,6 +150,7 @@ export default function GameInterface(props) {
       game
     };
     socket.emit("msgToServer", message);
+    console.log("sent");
   }
 
   function checkWin(vector, myVectors) {
