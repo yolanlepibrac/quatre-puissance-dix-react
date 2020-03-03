@@ -47,6 +47,15 @@ module.exports = {
       { headers: headers }
     );
   },
+  updateGame: function(game) {
+    return axios.post(
+      burl + "/games/updateGame",
+      {
+        game
+      },
+      { headers: headers }
+    );
+  },
   register: function(email, password, name) {
     return axios.post(
       burl + "/users/register",
