@@ -121,7 +121,7 @@ export default function GameInterface(props) {
   function addVector(newVect) {
     let email;
     let newGame = props.game;
-    if (isPlayer1) {
+    if (isPlayer1()) {
       newGame.vector1 = props.game.vectors1.push(newVect);
       email = props.game.player2;
     } else {
@@ -150,8 +150,6 @@ export default function GameInterface(props) {
       email,
       game
     };
-    console.log(email);
-    console.log(game);
     socket.emit("msgToServer", message);
   }
 
@@ -285,7 +283,7 @@ export default function GameInterface(props) {
               setHover={(key, player, bool) => setHover(key, player, bool)}
             />
           </Canvas>
-          {props.game.finish !== true && playerToPlay && (
+          {props.game.finish !== true && playerToPlay() && (
             <div
               style={{
                 height: "calc( 20vh - 50px )",
