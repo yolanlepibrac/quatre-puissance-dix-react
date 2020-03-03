@@ -4,66 +4,14 @@ import API from "./API";
 import socketIOClient from "socket.io-client";
 import Constantes from "./Constantes";
 
-const gamesdefault = [
-  {
-    id: 1,
-    dimension: 10,
-    players: [1, 2],
-    vectors1: [
-      [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
-      [0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 1, 0, 0, 0, 0, 0, 0, 0, 2]
-    ],
-    vectors2: [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [0, 2, 2, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
-    ],
-    player1play: true,
-    finish: false,
-    winner: undefined
-  },
-  {
-    id: 1,
-    dimension: 5,
-    players: [3, 4],
-    vectors1: [
-      [0, 1, 0, 0, 0],
-      [0, 1, 0, 0, 0],
-      [0, 2, 0, 0, 0],
-      [0, 1, 0, 0, 0]
-    ],
-    vectors2: [
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0],
-      [0, 2, 2, 0, 0],
-      [0, 0, 0, 0, 1]
-    ],
-    player1play: true,
-    finish: false,
-    winner: undefined
-  }
-];
-
 export default function MyApp(props) {
   const [games, setGames] = useState(props.games);
   const [modalNewGame, setModalNewGame] = useState(false);
-  const [response, setResponse] = useState(false);
 
   useEffect(() => {
     const socket = socketIOClient(Constantes.server);
-    console.log(props.user.email);
     socket.on(props.user.email, newGame => {
-      console.log(newGame.game.id);
-      for (let index = 0; index < games.length; index++) {
-        if (newGame.game.id == games[index].id) {
-          let newGames = games;
-          newGames[index] = newGame.game;
-          setGames(newGames);
-        }
-      }
+      props.setGame(newGame);
     });
   });
 

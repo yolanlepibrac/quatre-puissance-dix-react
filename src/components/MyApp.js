@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import GameInterface from "./GameInterface";
@@ -16,7 +16,9 @@ function MyApp() {
 
   function navigateGame(game) {
     setCurrentGame(game);
+
     history.push("/game");
+    console.log(currentGame);
   }
 
   function navigateHome(data) {
@@ -40,6 +42,23 @@ function MyApp() {
     history.push("/login");
   }
 
+  function setGamesToState(newGame) {
+    for (let index = 0; index < games.length; index++) {
+      if (newGame.game.id == games[index].id) {
+        let newGames = games;
+        newGames[index] = newGame.game;
+        setGames(newGames);
+        console.log(games);
+      }
+    }
+  }
+
+  function setCurrentGameToState(game) {
+    console.log("set current game to state");
+    setCurrentGame(game);
+    console.log(currentGame);
+  }
+
   return (
     <div id="appContainer">
       <YolanHeader className="MyButton" backgroundColor="rgba(132,123,231,1)" height={50}>
@@ -55,11 +74,22 @@ function MyApp() {
           </Route>
           <Route exact path="/home">
             {!connected && <Redirect to="/login"></Redirect>}
-            <Dashboard navigateGame={navigateGame} user={user} games={games} addGame={addGame}></Dashboard>
+            <Dashboard
+              navigateGame={navigateGame}
+              user={user}
+              games={games}
+              addGame={addGame}
+              setGame={setGamesToState}
+            ></Dashboard>
           </Route>
           <Route exact path="/game">
             {!connected && <Redirect to="/login"></Redirect>}
-            <GameInterface game={currentGame} quitGame={quitGame} user={user}></GameInterface>
+            <GameInterface
+              game={currentGame}
+              quitGame={quitGame}
+              user={user}
+              setCurrentGame={setCurrentGameToState}
+            ></GameInterface>
           </Route>
         </Switch>
       </div>

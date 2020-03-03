@@ -5,17 +5,28 @@ import { Canvas } from "react-three-fiber";
 import vectorHelper from "./vectorHelper";
 import gameHelper from "./gameHelper";
 import Constantes from "./Constantes";
+import API from "./API";
 
 import socketIOClient from "socket.io-client";
 
 export default function GameInterface(props) {
   const [currentVector, setCurrentVector] = useState(initializeVector(props.game.dimensions - 1));
-  const [game, setGame] = useState(props.game);
   const [canvasAxes, setCanvasAxes] = useState([0, 1, props.game.dimensions - 1]);
   const [hoveredBoules0, setHoveredBoules0] = useState([]);
   const [hoveredBoules1, setHoveredBoules1] = useState([]);
 
   const [stateTest, setStateTest] = useState(0);
+
+  useEffect(() => {
+    const socket = socketIOClient(Constantes.server);
+    socket.on(props.user.email, newGame => {
+      console.log(props.game.id);
+      console.log(newGame.game.id);
+      if (newGame.game.id === props.game.id) {
+        props.setCurrentGame(newGame.game);
+      }
+    });
+  });
 
   function initializeVector(dimensions) {
     let array = [];
@@ -46,24 +57,24 @@ export default function GameInterface(props) {
   }
 
   function setVector() {
-    if (!game.vectors1 || !game.vectors2) {
+    if (!props.game.vectors1 || !props.game.vectors2) {
       return;
     }
     let vectExisting = [];
-    let allvect = game.vectors1.concat(game.vectors2);
+    let allvect = props.game.vectors1.concat(props.game.vectors2);
 
     for (let index = 0; index < allvect.length; index++) {
       let vect = allvect[index].slice();
       vect.pop();
       if (arraysEqual(vect, currentVector)) {
-        vectExisting.push(allvect[index][game.dimensions - 1]);
+        vectExisting.push(allvect[index][props.game.dimensions - 1]);
       }
     }
-    let myVectors = game.player1 === props.user.email ? game.vectors1 : game.vectors2;
+    let myVectors = props.game.player1 === props.user.email ? props.game.vectors1 : props.game.vectors2;
 
     //si au moins 1 vecteur similaire existe
     let valueZ = vectExisting.length > 0 ? Math.max(...vectExisting) + 1 : 0;
-    if (valueZ < gameHelper.sizeMap(game.dimensions)) {
+    if (valueZ < gameHelper.sizeMap(props.game.dimensions)) {
       let vectorToAdd = currentVector.concat(valueZ);
       if (checkWin(vectorToAdd, myVectors)) {
         setWin(vectorToAdd);
@@ -73,38 +84,64 @@ export default function GameInterface(props) {
     } else {
       alert(
         "Tu ne peux plus ajouter de boules suivant ce vecteur. La limite de " +
-          gameHelper.sizeMap(game.dimensions) +
+          gameHelper.sizeMap(props.game.dimensions) +
           " est atteinte"
       );
     }
   }
 
   function setWin() {
-    function addVector(newVect) {
-      if (game.player1 === props.user.email) {
-        setGame({ ...game, vector1: game.vectors1.push(newVect), finish: true, winner1: true });
+    /* function addVector(newVect) {
+      if (props.game.player1 === props.user.email) {
+        setGame({ ...props.game, vector1: props.game.vectors1.push(newVect), finish: true, winner1: true });
       } else {
-        setGame({ ...game, vector2: game.vectors2.push(newVect), finish: true, winner1: false });
+        setGame({ ...props.game, vector2: props.game.vectors2.push(newVect), finish: true, winner1: false });
       }
-    }
+    } */
     alert("You Win");
     //API.setGameWin(gameWin);
   }
 
-  function addVector(newVect) {
-    if (game.player1 === props.user.email) {
-      let newGame = game;
-      newGame.vector1 = game.vectors1.push(newVect);
-      let email = game.player2;
-      sendGame(email, newGame);
-      //setGame({ ...game, vector1: game.vectors1.push(newVect) });
+  function isPlayer1() {
+    if (props.game.player1 === props.user.email) {
+      return true;
     } else {
-      let newGame = game;
-      newGame.vector1 = game.vectors2.push(newVect);
-      let email = game.player1;
-      sendGame(email, newGame);
-      //setGame({ ...game, vector2: game.vectors2.push(newVect) });
+      return false;
     }
+  }
+
+  function playerToPlay() {
+    if ((isPlayer1 && props.game.player1ToPlay) || (!isPlayer1 && !props.game.player1ToPlay)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function addVector(newVect) {
+    let email;
+    let newGame = props.game;
+    if (isPlayer1) {
+      newGame.vector1 = props.game.vectors1.push(newVect);
+      email = props.game.player2;
+    } else {
+      newGame.vector1 = props.game.vectors2.push(newVect);
+      email = props.game.player1;
+    }
+    updateGame(email, newGame);
+  }
+
+  function updateGame(email, game) {
+    let newGame = game;
+    newGame.player1ToPlay = !game.player1ToPlay;
+    API.updateGame(newGame)
+      .then(response => {
+        console.log(response);
+        sendGame(email, newGame);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   function sendGame(email, game) {
@@ -145,7 +182,7 @@ export default function GameInterface(props) {
           numberAlign++;
           l--;
         }
-        if (numberAlign >= gameHelper.numberToWin(game.dimensions)) {
+        if (numberAlign >= gameHelper.numberToWin(props.game.dimensions)) {
           return true;
         }
       }
@@ -200,23 +237,23 @@ export default function GameInterface(props) {
         >
           retour
         </button>
-        {game.players1 && game.players2 && (
+        {props.game.players1 && props.game.players2 && (
           <div>
-            <div>{game.players1}</div>
-            <div>{game.players2}</div>
+            <div>{props.game.players1}</div>
+            <div>{props.game.players2}</div>
           </div>
         )}
       </div>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <ColumnPlayer
           name={"Player 1"}
-          tabOfVectors={game.vectors1}
+          tabOfVectors={props.game.vectors1}
           hoveredBoules={hoveredBoules0}
           color={Constantes.colorPlayer1}
         ></ColumnPlayer>
         <ColumnPlayer
           name={"Player 2"}
-          tabOfVectors={game.vectors2}
+          tabOfVectors={props.game.vectors2}
           hoveredBoules={hoveredBoules1}
           color={Constantes.colorPlayer2}
         ></ColumnPlayer>
@@ -229,7 +266,7 @@ export default function GameInterface(props) {
           }}
         >
           <CoordinatePicker
-            dimensions={game.dimensions}
+            dimensions={props.game.dimensions}
             canvasAxes={canvasAxes}
             toggleAxis={toggleAxis}
             stateTest={stateTest}
@@ -243,12 +280,12 @@ export default function GameInterface(props) {
             }}
           >
             <CanvasContent
-              game={game}
+              game={props.game}
               canvasAxes={canvasAxes}
               setHover={(key, player, bool) => setHover(key, player, bool)}
             />
           </Canvas>
-          {game.finish !== true && (
+          {props.game.finish !== true && playerToPlay && (
             <div
               style={{
                 height: "calc( 20vh - 50px )",
@@ -259,7 +296,10 @@ export default function GameInterface(props) {
               }}
             >
               <div style={{ display: "flex" }}>
-                <MapCoordinates dimensions={game.dimensions} setCoordinateValue={setCoordinateValue}></MapCoordinates>
+                <MapCoordinates
+                  dimensions={props.game.dimensions}
+                  setCoordinateValue={setCoordinateValue}
+                ></MapCoordinates>
                 <CoordinateZ></CoordinateZ>
               </div>
               <button onClick={setVector}>SET VECTOR</button>
