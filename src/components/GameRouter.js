@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import GameInterface from "./GameInterface";
@@ -15,12 +15,13 @@ function GameRouter(props) {
 
   useEffect(() => {
     socket.on(props.user.email, newGame => {
+      console.log("received");
       setGamesToState(newGame.game);
       if (newGame.game.id === currentGame.id) {
         setCurrentGame(newGame.game);
       }
     });
-  });
+  }, []);
 
   function navigateGame(game) {
     setCurrentGame(game);
