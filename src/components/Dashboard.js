@@ -1,18 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import GameItem from "./GameItem";
 import API from "./API";
-import socketIOClient from "socket.io-client";
 import Constantes from "./Constantes";
+import socketIOClient from "socket.io-client";
 
 export default function MyApp(props) {
   const [modalNewGame, setModalNewGame] = useState(false);
-
-  useEffect(() => {
-    const socket = socketIOClient(Constantes.server);
-    socket.on(props.user.email, newGame => {
-      props.setGame(newGame);
-    });
-  });
 
   function navigateGame(game) {
     props.navigateGame(game);
@@ -55,7 +48,6 @@ function ModalNewGame(props) {
   function createGame() {
     if (props.player1email !== undefined && player2email !== undefined && dimensions !== undefined) {
       API.createGame(props.player1email, player2email, dimensions).then(data => {
-        //props.addGame(data.data.game);
         API.setUserGame(props.player1email, data.data.game.id).then(response => {
           console.log(response);
           API.setUserGame(player2email, data.data.game.id).then(response => {
@@ -66,6 +58,7 @@ function ModalNewGame(props) {
               game: data.data.game
             };
             socket.emit("msgToServer", message);
+            props.setModalNewGame(false);
           });
         });
       });

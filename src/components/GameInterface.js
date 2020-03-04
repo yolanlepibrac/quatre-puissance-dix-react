@@ -18,15 +18,6 @@ export default function GameInterface(props) {
   const [stateTest, setStateTest] = useState(0);
   const socket = socketIOClient(Constantes.server);
 
-  useEffect(() => {
-    socket.on(props.user.email, newGame => {
-      if (newGame.game.id === props.game.id) {
-        props.setCurrentGame(newGame.game);
-      }
-      console.log("received");
-    });
-  });
-
   function initializeVector(dimensions) {
     let array = [];
     for (let index = 0; index < dimensions; index++) {
