@@ -4,6 +4,7 @@ import Dashboard from "./Dashboard";
 import GameInterface from "./GameInterface";
 import Connect from "./Connect";
 import YolanHeader from "./YolanHeader";
+import GameRouter from "./GameRouter";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 function MyApp() {
@@ -14,44 +15,16 @@ function MyApp() {
 
   let history = useHistory();
 
-  function navigateGame(game) {
-    setCurrentGame(game);
-
-    history.push("/game");
-  }
-
   function navigateHome(data) {
+    console.log("connected");
     setConnected(true);
     setGames(data.games);
     setUser(data.user);
     history.push("/home");
   }
 
-  function quitGame() {
-    history.push("/home");
-  }
-
   function disconnect() {
     history.push("/login");
-  }
-
-  function setGamesToState(newGame) {
-    let existingGame = false;
-    for (let index = 0; index < games.length; index++) {
-      if (newGame.game.id == games[index].id) {
-        let newGames = games;
-        newGames[index] = newGame.game;
-        setGames(newGames);
-        existingGame = true;
-      }
-    }
-    if (!existingGame) {
-      setGames([...games, newGame.game]);
-    }
-  }
-
-  function setCurrentGameToState(game) {
-    setCurrentGame(game);
   }
 
   return (
@@ -67,19 +40,7 @@ function MyApp() {
           <Route exact path="/login">
             <Connect navigateHome={data => navigateHome(data)}></Connect>
           </Route>
-          <Route exact path="/home">
-            {!connected && <Redirect to="/login"></Redirect>}
-            <Dashboard navigateGame={navigateGame} user={user} games={games} setGame={setGamesToState}></Dashboard>
-          </Route>
-          <Route exact path="/game">
-            {!connected && <Redirect to="/login"></Redirect>}
-            <GameInterface
-              game={currentGame}
-              quitGame={quitGame}
-              user={user}
-              setCurrentGame={setCurrentGameToState}
-            ></GameInterface>
-          </Route>
+          <GameRouter user={user} connected={connected} games={games} />
         </Switch>
       </div>
     </div>
