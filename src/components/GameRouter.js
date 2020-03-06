@@ -14,14 +14,14 @@ function GameRouter(props) {
   let history = useHistory();
 
   useEffect(() => {
-    socket.on(props.user.email, newGame => {
+    socket.on("msg", newGame => {
       console.log("received");
       setGamesToState(newGame.game);
       if (newGame.game.id === currentGame.id) {
         setCurrentGame(newGame.game);
       }
     });
-  }, []);
+  });
 
   function navigateGame(game) {
     setCurrentGame(game);
