@@ -15,11 +15,11 @@ function GameRouter(props) {
 
   useEffect(() => {
     socket.on("msg", newGame => {
-      console.log("received");
-      setGamesToState(newGame.game);
+      console.log("newGame");
+      /* setGamesToState(newGame.game);
       if (newGame.game.id === currentGame.id) {
         setCurrentGame(newGame.game);
-      }
+      } */
     });
   });
 
