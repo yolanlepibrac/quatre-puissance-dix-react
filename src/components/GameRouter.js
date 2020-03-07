@@ -14,7 +14,7 @@ function GameRouter(props) {
   let history = useHistory();
 
   useEffect(() => {
-    socket.on("msg", newGame => {
+    socket.on(props.user.email, newGame => {
       setGamesToState(newGame.game);
       if (newGame.game.id === currentGame.id) {
         setCurrentGame(newGame.game);
