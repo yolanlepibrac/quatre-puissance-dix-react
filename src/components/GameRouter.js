@@ -46,7 +46,7 @@ function GameRouter(props) {
       }
     }
     if (!existingGame) {
-      setGames([...games, newGame.game]);
+      setGames([...games, newGame]);
     }
   }
 

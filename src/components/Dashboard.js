@@ -32,9 +32,7 @@ export default function MyApp(props) {
                 height: 150,
                 backgroundColor: "rgba(124,156,37,1)"
               }}
-            >
-              XXX
-            </GameItem>
+            ></GameItem>
           );
         })}
     </div>

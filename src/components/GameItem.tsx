@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { FunctionComponent, useState, useEffect } from "react";
 import CSS from "csstype";
 
 interface game {
@@ -25,41 +25,30 @@ interface Props {
   onClick: any;
 }
 
-interface State {}
+const GameItem: FunctionComponent<Props> = props => {
+  const play = props.game.player1ToPlay && props.user.email === props.game.player1 ? true : false;
 
-class GameItem extends React.Component<Props, State> {
-  state: any = {
-    account: {
-      id: 2
-    }
-  };
-
-  openGame = () => {
+  function openGame() {
     console.log("game open");
-  };
-
-  render() {
-    const play = this.props.game.player1ToPlay && this.props.user.email === this.props.game.player1 ? true : false;
-    return (
-      <div id="containerGameItem" style={{ ...this.props.style, cursor: "pointer" }} onClick={this.props.onClick}>
-        <div
-          style={{
-            width: "100",
-            height: 20,
-            backgroundColor: "red",
-            display: "flex",
-            justifyContent: "space-around"
-          }}
-        >
-          <div>{this.props.game.player1}</div>
-          <div>{this.props.game.player2}</div>
-        </div>
-        <div>
-          {play ? <div>Your turn to play</div> : <div>{"wait for " + this.props.game.player2 + "to play"}</div>}
-        </div>
-      </div>
-    );
   }
-}
+
+  return (
+    <div id="containerGameItem" style={{ ...props.style, cursor: "pointer" }} onClick={props.onClick}>
+      <div
+        style={{
+          width: "100",
+          height: 20,
+          backgroundColor: "red",
+          display: "flex",
+          justifyContent: "space-around"
+        }}
+      >
+        <div>{props.game.player1}</div>
+        <div>{props.game.player2}</div>
+      </div>
+      <div>{play ? <div>Your turn to play</div> : <div>{"wait for " + props.game.player2 + "to play"}</div>}</div>
+    </div>
+  );
+};
 
 export default GameItem;
