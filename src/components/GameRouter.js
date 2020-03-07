@@ -9,12 +9,14 @@ import Constantes from "./Constantes";
 function GameRouter(props) {
   const [currentGame, setCurrentGame] = useState({});
   const [games, setGames] = useState(props.games);
+  const [numberState, setNumberState] = useState(0);
   const socket = socketIOClient(Constantes.server);
 
   let history = useHistory();
 
   useEffect(() => {
     socket.on("msg", newGame => {
+      setNumberState(numberState + 1);
       console.log("newGame");
       /* setGamesToState(newGame.game);
       if (newGame.game.id === currentGame.id) {
