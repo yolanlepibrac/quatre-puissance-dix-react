@@ -22,7 +22,6 @@ const Loading: FunctionComponent<Props> = props => {
         }}
       >
         <div
-          onClick={() => props.onClick()}
           style={{
             display: "flex",
             flexDirection: "column",

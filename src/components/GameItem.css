@@ -3,15 +3,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: linear-gradient(
-    45deg,
-    rgba(190, 190, 190, 1),
-    rgba(210, 210, 210, 1),
-    rgba(190, 190, 190, 1),
-    rgba(210, 210, 210, 1),
-    rgba(190, 190, 190, 1),
-    rgba(210, 210, 210, 1)
-  );
   background-size: 600% 600%;
 }
 
@@ -154,4 +145,9 @@
   align-items: center;
   color: white;
   position: relative;
+}
+
+.GameItem_legend {
+  font-weight: bold;
+  font-size: 15px;
 }

@@ -20,6 +20,10 @@ export default function GameInterface(props) {
   const [stateTest, setStateTest] = useState(0);
   const socket = socketIOClient(Constantes.server);
 
+  useEffect(() => {
+    setDisplayLoading(false);
+  }, [props]);
+
   function initializeVector(dimensions) {
     let array = [];
     for (let index = 0; index < dimensions; index++) {
@@ -49,12 +53,15 @@ export default function GameInterface(props) {
   }
 
   function setVector() {
+    setDisplayLoading(true);
     if (!props.game.vectors1 || !props.game.vectors2) {
+      setDisplayLoading(false);
       return;
     }
 
     for (let index = 0; index < currentVector.length; index++) {
       if (currentVector[index] >= gameHelper.sizeMap(props.game.dimensions)) {
+        setDisplayLoading(false);
         alert(
           "The maximum of value for each dimension of the vector played is " +
             (gameHelper.sizeMap(props.game.dimensions) - 1)
@@ -77,6 +84,7 @@ export default function GameInterface(props) {
     let myVectors = props.game.player1 === props.user.email ? props.game.vectors1 : props.game.vectors2;
     let otherVectors = props.game.player1 === props.user.email ? props.game.vectors2 : props.game.vectors1;
     if (myVectors.length > otherVectors.length) {
+      setDisplayLoading(false);
       alert("Something went wrong, somebody have played to much before other player played");
       return;
     }
@@ -91,6 +99,7 @@ export default function GameInterface(props) {
         addVector(vectorToAdd);
       }
     } else {
+      setDisplayLoading(false);
       alert(
         "Tu ne peux plus ajouter de boules suivant ce vecteur. La limite de " +
           gameHelper.sizeMap(props.game.dimensions) +
@@ -224,95 +233,103 @@ export default function GameInterface(props) {
 
   return (
     <div id="appContainer" style={{ display: "flex", flexDirection: "column" }}>
-      <div onClick={quitGame} id="GameInterface_boutonRetour">
-        back to menu
-      </div>
-      <div id="GameInterface_GameContainer">
-        <ColumnPlayer
-          name={"Player 1 : " + props.game.player1}
-          tabOfVectors={props.game.vectors1}
-          hoveredBoules={hoveredBoules0}
-          color={Constantes.colorPlayer1}
-        ></ColumnPlayer>
-        <ColumnPlayer
-          name={"Player 2 : " + props.game.player2}
-          tabOfVectors={props.game.vectors2}
-          hoveredBoules={hoveredBoules1}
-          color={Constantes.colorPlayer2}
-        ></ColumnPlayer>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "50%",
-            position: "relative"
-          }}
-        >
-          <CoordinatePicker
-            dimensions={props.game.dimensions}
-            canvasAxes={canvasAxes}
-            toggleAxis={toggleAxis}
-            stateTest={stateTest}
-          />
-          <Canvas
-            camera={{
-              position: [
-                -gameHelper.sizeMap(props.game.dimensions),
-                gameHelper.sizeMap(props.game.dimensions),
-                -gameHelper.sizeMap(props.game.dimensions)
-              ]
-            }}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              height: "calc(100vh - 190px)"
-            }}
-          >
-            <CanvasContent
-              game={props.game}
-              canvasAxes={canvasAxes}
-              setHover={(key, player, bool) => setHover(key, player, bool)}
-              orbit={true}
-            />
-          </Canvas>
-          <div id="GameInterface_setItemContainer">
-            {props.game.finish !== true ? (
-              <div>
-                {playerToPlay() ? (
-                  <div>
-                    <div style={{ display: "flex" }}>
-                      <MapCoordinates
-                        dimensions={props.game.dimensions}
-                        setCoordinateValue={setCoordinateValue}
-                      ></MapCoordinates>
-                      <CoordinateZ></CoordinateZ>
-                    </div>
-                    <div id="GameInterface_sendVector" onClick={setVector}>
-                      Add vector
-                    </div>
-                  </div>
-                ) : (
-                  <div id="GameInterface_BottomTextWait">Wait for the second player to play</div>
-                )}
-              </div>
-            ) : (
-              <div
-                id="GameInterface_BottomTextWait"
+      {displayLoading ? (
+        <Loading></Loading>
+      ) : (
+        <div>
+          <div onClick={quitGame} id="GameInterface_boutonRetour">
+            back to menu
+          </div>
+          <div id="GameInterface_GameContainer">
+            <ColumnPlayer
+              name={"Player 1 : " + props.game.player1}
+              tabOfVectors={props.game.vectors1}
+              hoveredBoules={hoveredBoules0}
+              color={Constantes.colorPlayer1}
+            ></ColumnPlayer>
+            <ColumnPlayer
+              name={"Player 2 : " + props.game.player2}
+              tabOfVectors={props.game.vectors2}
+              hoveredBoules={hoveredBoules1}
+              color={Constantes.colorPlayer2}
+            ></ColumnPlayer>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "50%",
+                position: "relative"
+              }}
+            >
+              <CoordinatePicker
+                dimensions={props.game.dimensions}
+                canvasAxes={canvasAxes}
+                toggleAxis={toggleAxis}
+                stateTest={stateTest}
+              />
+              <Canvas
+                camera={{
+                  position: [
+                    -gameHelper.sizeMap(props.game.dimensions),
+                    gameHelper.sizeMap(props.game.dimensions),
+                    -gameHelper.sizeMap(props.game.dimensions)
+                  ]
+                }}
                 style={{
-                  fontSize: 30,
-                  color:
-                    (props.game.winner1 && isPlayer1()) || (!props.game.winner1 && !isPlayer1())
-                      ? Constantes.colorApp1
-                      : Constantes.colorApp3
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "100%",
+                  height: "calc(100vh - 190px)"
                 }}
               >
-                {(props.game.winner1 && isPlayer1()) || (!props.game.winner1 && !isPlayer1()) ? "You win" : "You loose"}
+                <CanvasContent
+                  game={props.game}
+                  canvasAxes={canvasAxes}
+                  setHover={(key, player, bool) => setHover(key, player, bool)}
+                  orbit={true}
+                />
+              </Canvas>
+              <div id="GameInterface_setItemContainer">
+                {props.game.finish !== true ? (
+                  <div>
+                    {playerToPlay() ? (
+                      <div>
+                        <div style={{ display: "flex" }}>
+                          <MapCoordinates
+                            dimensions={props.game.dimensions}
+                            setCoordinateValue={setCoordinateValue}
+                          ></MapCoordinates>
+                          <CoordinateZ></CoordinateZ>
+                        </div>
+                        <div id="GameInterface_sendVector" onClick={setVector}>
+                          Add vector
+                        </div>
+                      </div>
+                    ) : (
+                      <div id="GameInterface_BottomTextWait">Wait for the second player to play</div>
+                    )}
+                  </div>
+                ) : (
+                  <div
+                    id="GameInterface_BottomTextWait"
+                    style={{
+                      fontSize: 30,
+                      color:
+                        (props.game.winner1 && isPlayer1()) || (!props.game.winner1 && !isPlayer1())
+                          ? Constantes.colorApp1
+                          : Constantes.colorApp3
+                    }}
+                  >
+                    {(props.game.winner1 && isPlayer1()) || (!props.game.winner1 && !isPlayer1())
+                      ? "You win"
+                      : "You loose"}
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

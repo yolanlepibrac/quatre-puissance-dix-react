@@ -4,6 +4,7 @@ import { Canvas } from "react-three-fiber";
 import CSS from "csstype";
 import "./GameItem.css";
 import API from "./API";
+import Constantes from "./Constantes";
 
 interface game {
   id: string;
@@ -54,10 +55,28 @@ const GameItem: FunctionComponent<Props> = props => {
     console.log(props.game.player1);
   }
 
+  const gradientGrey =
+    "linear-gradient(45deg,rgba(190, 190, 190, 1),rgba(210, 210, 210, 1),rgba(190, 190, 190, 1),rgba(210, 210, 210, 1),rgba(190, 190, 190, 1),rgba(210, 210, 210, 1))";
+  const gradientGreen =
+    "linear-gradient(45deg,rgb(84, 224, 159),rgba(65, 181, 127, 1),rgb(84, 224, 159),rgba(65, 181, 127, 1),rgb(84, 224, 159),rgba(65, 181, 127, 1))";
+  const gradientRed =
+    "linear-gradient(45deg,rgba(173, 25, 17,1),rgba(140, 10, 10,1),rgba(173, 25, 17,1),rgba(140, 10, 10,1),rgba(173, 25, 17,1),rgba(140, 10, 10,1))";
+
+  const winnerIsMe =
+    (props.game.winner1 && props.game.player1 === props.user.email) ||
+    (!props.game.winner1 && props.game.player1 !== props.user.email);
+
   return displayLoading ? (
     <div></div>
   ) : (
-    <div id="containerGameItem" style={props.style} onClick={() => props.onClick()}>
+    <div
+      id="containerGameItem"
+      style={{
+        ...props.style,
+        backgroundImage: props.game.finish ? (winnerIsMe ? gradientGreen : gradientRed) : gradientGrey
+      }}
+      onClick={() => props.onClick()}
+    >
       <div id="GameItem_top">
         <div className="GameItem_name">{props.user.name}</div>
         <div id="GameItem_versus">vs</div>
@@ -69,29 +88,39 @@ const GameItem: FunctionComponent<Props> = props => {
             {props.game.dimensions}
             <div id="gameItem_legendDimensions">dimensions</div>
           </div>
-
-          {/* <Canvas 
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            height: "100%"
-          }}
-        >
-          <CanvasContent game={props.game} canvasAxes={props.game.dimensions > 2 ? [0, 1, 2] : [0, 1]} orbit={false} />
-        </Canvas> */}
         </div>
       </div>
-      <div
-        id="GameItem_bottom"
-        style={{
-          backgroundColor: play ? "rgba(178, 237, 204,1)" : "rgba(237, 178, 204,1)"
-        }}
-      >
-        {play ? (
-          <div style={{ fontWeight: "bold", fontSize: 15 }}>Your turn to play</div>
+      <div id="GameItem_bottom">
+        {props.game.finish ? (
+          <div>
+            {winnerIsMe ? (
+              <div className="GameItem_legend">You Win</div>
+            ) : (
+              <div className="GameItem_legend">You loose</div>
+            )}
+          </div>
         ) : (
-          <div style={{ fontWeight: "bold", fontSize: 15 }}>Wait adversary to play</div>
+          <div>
+            {play ? (
+              <div
+                className="GameItem_legend"
+                style={{
+                  color: "rgba(65, 181, 127, 1)"
+                }}
+              >
+                Your turn to play
+              </div>
+            ) : (
+              <div
+                className="GameItem_legend"
+                style={{
+                  color: "rgba(173, 25, 17,1)"
+                }}
+              >
+                Wait adversary to play
+              </div>
+            )}
+          </div>
         )}
         <div id="GameItem_boulesimages">
           <div className="GameItem_boulesimageSide">
