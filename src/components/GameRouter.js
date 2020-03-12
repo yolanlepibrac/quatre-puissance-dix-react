@@ -28,8 +28,7 @@ function GameRouter(props) {
   }, []);
 
   function setGameState(newGame) {
-    console.log(newGame.game.id);
-    console.log(currentGameRef.current);
+    console.log(newGame.game);
     setGamesToState(newGame.game);
     if (newGame.game.id === currentGameRef.current.id) {
       setCurrentGame(newGame.game);
@@ -37,7 +36,6 @@ function GameRouter(props) {
   }
 
   function navigateGame(game) {
-    console.log(game);
     setCurrentGame(game);
     //currentGameRef.current = currentGame;
     history.push("/game");

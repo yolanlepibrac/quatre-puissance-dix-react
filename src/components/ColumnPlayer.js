@@ -59,8 +59,18 @@ export default function ColumnPlayer(props) {
               >
                 {vector.map((coordinate, key) => {
                   return (
-                    <div key={key} style={{ width: "100%", flexDirection: "row" }}>
-                      {coordinate}
+                    <div
+                      key={key}
+                      style={{
+                        width: "100%",
+                        flexDirection: "row",
+                        color:
+                          props.game.finish && vectorHelper.vectorContain(props.game.vectorsWinner, vector)
+                            ? Constantes.colorApp1
+                            : "black"
+                      }}
+                    >
+                      {parseInt(coordinate, 10) + 1}
                     </div>
                   );
                 })}

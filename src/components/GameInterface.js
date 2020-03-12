@@ -15,14 +15,26 @@ export default function GameInterface(props) {
   const [canvasAxes, setCanvasAxes] = useState(props.game.dimensions > 2 ? [0, 1, props.game.dimensions - 1] : [0, 1]);
   const [hoveredBoules0, setHoveredBoules0] = useState([]);
   const [hoveredBoules1, setHoveredBoules1] = useState([]);
-  const [displayLoading, setDisplayLoading] = useState(false);
+  const [displayLoading, setDisplayLoading] = useState(true);
+  const [player2, setPlayer2] = useState({ name: "" });
 
   const [stateTest, setStateTest] = useState(0);
   const socket = socketIOClient(Constantes.server);
 
+  const secondPlayer = props.game.player1 === props.user.email ? props.game.player2 : props.game.player1;
+
   useEffect(() => {
     setDisplayLoading(false);
   }, [props]);
+
+  useEffect(() => {
+    API.getUserByMail(secondPlayer).then(dataUser => {
+      console.log(dataUser.data.user);
+      setPlayer2(dataUser.data.user);
+      setDisplayLoading(false);
+    });
+    console.log(props.game);
+  }, []);
 
   function initializeVector(dimensions) {
     let array = [];
@@ -93,8 +105,12 @@ export default function GameInterface(props) {
     let valueZ = vectExisting.length > 0 ? Math.max(...vectExisting) + 1 : 0;
     if (valueZ < gameHelper.sizeMap(props.game.dimensions)) {
       let vectorToAdd = currentVector.concat(valueZ);
-      if (checkWin(vectorToAdd, myVectors)) {
-        setWin(vectorToAdd);
+      console.log(vectorToAdd);
+      console.log(myVectors);
+      let checkIfWin = checkWin(vectorToAdd, myVectors);
+      console.log(checkIfWin);
+      if (checkIfWin.win) {
+        setWin(vectorToAdd, checkIfWin.vectors);
       } else {
         addVector(vectorToAdd);
       }
@@ -134,9 +150,10 @@ export default function GameInterface(props) {
     updateGame(props.game.player1, props.game.player2, newGame);
   }
 
-  function setWin(newVect) {
+  function setWin(newVect, vectorsWinner) {
     let newGame = { ...props.game };
     newGame.finish = true;
+    newGame.vectorsWinner = vectorsWinner;
     if (isPlayer1()) {
       newGame.winner1 = true;
       newGame.vector1 = props.game.vectors1.push(newVect);
@@ -173,9 +190,11 @@ export default function GameInterface(props) {
   function checkWin(vector, myVectors) {
     for (let i = 0; i < myVectors.length; i++) {
       let difference = vectorHelper.vectorDifference(myVectors[i], vector);
+
       if (vectorHelper.isLessThanOne(difference)) {
         let k = 1;
         let numberAlign = 1; //boule just put
+        let winVectors = [vector];
         //positive direction
         while (
           vectorHelper.vectorContain(
@@ -183,6 +202,7 @@ export default function GameInterface(props) {
             vectorHelper.vectorAddition(vector, vectorHelper.vectorMultiply(difference, k))
           )
         ) {
+          winVectors.push(vectorHelper.vectorAddition(vector, vectorHelper.vectorMultiply(difference, k)));
           numberAlign++;
           k++;
         }
@@ -194,16 +214,17 @@ export default function GameInterface(props) {
             vectorHelper.vectorAddition(vector, vectorHelper.vectorMultiply(difference, l))
           )
         ) {
+          winVectors.push(vectorHelper.vectorAddition(vector, vectorHelper.vectorMultiply(difference, l)));
           numberAlign++;
           l--;
         }
         if (numberAlign >= gameHelper.numberToWin(props.game.dimensions)) {
-          return true;
+          return { win: true, vectors: winVectors };
         }
       }
     }
 
-    return false;
+    return { win: false, vectors: [] };
   }
 
   function toggleAxis(numeroAxis) {
@@ -244,18 +265,20 @@ export default function GameInterface(props) {
             <ColumnPlayer
               playerIsMe={isPlayer1()}
               playerIs1={true}
-              name={"Player 1 : " + props.game.player1}
+              name={"Player 1 : " + props.user.name}
               tabOfVectors={props.game.vectors1}
               hoveredBoules={hoveredBoules0}
               color={Constantes.colorPlayer1}
+              game={props.game}
             ></ColumnPlayer>
             <ColumnPlayer
               playerIsMe={!isPlayer1()}
               playerIs1={false}
-              name={"Player 2 : " + props.game.player2}
+              name={"Player 2 : " + player2.name}
               tabOfVectors={props.game.vectors2}
               hoveredBoules={hoveredBoules1}
               color={Constantes.colorPlayer2}
+              game={props.game}
             ></ColumnPlayer>
             <div
               style={{

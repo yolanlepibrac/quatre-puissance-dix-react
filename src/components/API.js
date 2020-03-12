@@ -22,7 +22,8 @@ module.exports = {
         dimensions: dimensions,
         player1ToPlay: true,
         finish: false,
-        winner1: undefined
+        winner1: undefined,
+        vectorsWinner: []
       },
       { headers: headers }
     );
