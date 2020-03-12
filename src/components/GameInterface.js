@@ -242,12 +242,16 @@ export default function GameInterface(props) {
           </div>
           <div id="GameInterface_GameContainer">
             <ColumnPlayer
+              playerIsMe={isPlayer1()}
+              playerIs1={true}
               name={"Player 1 : " + props.game.player1}
               tabOfVectors={props.game.vectors1}
               hoveredBoules={hoveredBoules0}
               color={Constantes.colorPlayer1}
             ></ColumnPlayer>
             <ColumnPlayer
+              playerIsMe={!isPlayer1()}
+              playerIs1={false}
               name={"Player 2 : " + props.game.player2}
               tabOfVectors={props.game.vectors2}
               hoveredBoules={hoveredBoules1}

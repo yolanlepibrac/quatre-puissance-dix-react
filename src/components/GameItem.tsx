@@ -105,7 +105,7 @@ const GameItem: FunctionComponent<Props> = props => {
               <div
                 className="GameItem_legend"
                 style={{
-                  color: "rgba(65, 181, 127, 1)"
+                  color: Constantes.colorText1
                 }}
               >
                 Your turn to play
@@ -114,7 +114,7 @@ const GameItem: FunctionComponent<Props> = props => {
               <div
                 className="GameItem_legend"
                 style={{
-                  color: "rgba(173, 25, 17,1)"
+                  color: Constantes.colorText3
                 }}
               >
                 Wait adversary to play

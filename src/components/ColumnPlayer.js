@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import vectorHelper from "./vectorHelper";
+import Constantes from "./Constantes";
 
 import gameHelper from "./gameHelper";
 
@@ -20,7 +21,18 @@ export default function ColumnPlayer(props) {
         boxShadow: "2px 2px 2px 1px rgba(100, 100, 100, 0.7)"
       }}
     >
-      <div style={{ marginBottom: 10 }}>{props.name}</div>
+      <div
+        style={{
+          marginBottom: 10,
+          color: props.playerIs1 ? Constantes.colorPlayer1 : Constantes.colorPlayer2,
+          borderRadius: 7,
+          borderWidth: props.playerIsMe ? 2 : 0,
+          borderStyle: "solid",
+          borderColor: props.playerIs1 ? Constantes.colorPlayer1 : Constantes.colorPlayer2
+        }}
+      >
+        {props.name}
+      </div>
       <div style={{ width: "100%", display: "flex", flexDirection: "row", marginBottom: 10, minHeight: 20 }}>
         {props.tabOfVectors &&
           props.tabOfVectors[0] &&
