@@ -6,6 +6,7 @@ import Connect from "./Connect";
 import YolanHeader from "./YolanHeader";
 import GameRouter from "./GameRouter";
 import { Switch, Route, Redirect } from "react-router-dom";
+import "./MyApp.css";
 
 function MyApp() {
   const [currentGame, setCurrentGame] = useState({});
@@ -16,7 +17,7 @@ function MyApp() {
   let history = useHistory();
 
   function navigateHome(data) {
-    console.log("connected");
+    console.log(data.user);
     setConnected(true);
     setGames(data.games);
     setUser(data.user);
@@ -24,16 +25,31 @@ function MyApp() {
   }
 
   function disconnect() {
+    localStorage.setItem("email", undefined);
+    setConnected(false);
     history.push("/login");
   }
 
   return (
     <div id="appContainer">
-      <YolanHeader className="MyButton" backgroundColor="rgba(132,123,231,1)" height={50}>
-        {"Quatre Puissance Dix"}
-        <button onClick={() => disconnect()} style={{ position: "absolute", right: 20, top: 10 }}>
-          Disconnect
-        </button>
+      <YolanHeader
+        className="MyButton"
+        style={{ backgroundImage: "linear-gradient(180deg, rgba(65, 181, 127, 1), rgb(70, 200, 140))" }}
+        height={50}
+        user={user}
+      >
+        {"Power Four Power Ten"}
+        {connected && (
+          <div onClick={() => disconnect()} id="buttonDisconnect">
+            disconnect
+          </div>
+        )}
+        {connected && user.name && (
+          <div id="username">
+            <div style={{}}>Connected as</div>
+            <div>{user.name}</div>
+          </div>
+        )}
       </YolanHeader>
       <div style={{ height: "calc( 100vh - 50px )", display: "flex", justifyContent: "center", alignItems: "center" }}>
         <Switch>

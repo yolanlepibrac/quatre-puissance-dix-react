@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import GameInterface from "./GameInterface";
@@ -10,20 +10,36 @@ function GameRouter(props) {
   const [currentGame, setCurrentGame] = useState({});
   const [games, setGames] = useState(props.games);
   const socket = socketIOClient(Constantes.server);
+  const currentGameRef = useRef(currentGame);
+  useEffect(() => {
+    currentGameRef.current = currentGame;
+  });
 
   let history = useHistory();
 
   useEffect(() => {
-    socket.on(props.user.email, newGame => {
-      setGamesToState(newGame.game);
-      if (newGame.game.id === currentGame.id) {
-        setCurrentGame(newGame.game);
-      }
-    });
+    const handler = newGame => {
+      setGameState(newGame);
+    };
+    socket.on(props.user.email, handler);
+    return () => {
+      socket.off(props.user.email, handler);
+    };
   }, []);
 
+  function setGameState(newGame) {
+    console.log(newGame.game.id);
+    console.log(currentGameRef.current);
+    setGamesToState(newGame.game);
+    if (newGame.game.id === currentGameRef.current.id) {
+      setCurrentGame(newGame.game);
+    }
+  }
+
   function navigateGame(game) {
+    console.log(game);
     setCurrentGame(game);
+    //currentGameRef.current = currentGame;
     history.push("/game");
   }
 

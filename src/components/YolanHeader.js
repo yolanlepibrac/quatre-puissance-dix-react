@@ -13,10 +13,10 @@ export default class YolanHeader extends Component {
     return (
       <div
         style={{
+          ...this.props.style,
           zIndex: 1000,
           height: this.props.height,
           width: "100%",
-          backgroundColor: this.props.backgroundColor,
           boxShadow: "0px 3px 2px 0 rgba(0, 0, 0, 0.5)",
           display: "flex",
           flexDirection: "row",

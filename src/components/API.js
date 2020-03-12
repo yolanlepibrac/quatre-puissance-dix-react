@@ -34,7 +34,15 @@ module.exports = {
         email: email,
         password: password
       },
-      /* { email: "john", password: "changeme" }, */
+      { headers: headers }
+    );
+  },
+  reLogin: function(email) {
+    return axios.post(
+      burl + "/users/reLogin",
+      {
+        email: email
+      },
       { headers: headers }
     );
   },
@@ -89,5 +97,23 @@ module.exports = {
       return rand() + rand(); // to make it longer
     };
     return token();
+  },
+  searchUsers: function(name) {
+    return axios.post(
+      burl + "/users/searchUsers",
+      {
+        name
+      },
+      { headers: headers }
+    );
+  },
+  getUserByMail: function(email) {
+    return axios.post(
+      burl + "/users/getUserByMail",
+      {
+        email
+      },
+      { headers: headers }
+    );
   }
 };

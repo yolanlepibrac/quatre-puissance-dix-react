@@ -74,7 +74,7 @@ export default function CanvasContent(props) {
           color={Constantes.colorAxe3.color1}
         ></Line>
       )}
-      <orbitControls args={[camera, domElement]} />
+      {props.orbit && <orbitControls args={[camera, domElement]} />}
     </>
   );
 }
