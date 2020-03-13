@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import GameItem from "./GameItem";
 import Loading from "./Loading";
 import ModalNewGame from "./ModalNewGame";
+import ModalRules from "./ModalRules";
 import "./Dashboard.css";
 
 export default function MyApp(props) {
   const [modalNewGame, setModalNewGame] = useState(false);
+  const [modalRules, setModalRules] = useState(false);
   const [displayLoading, setDisplayLoading] = useState(false);
 
   function navigateGame(game) {
@@ -21,10 +23,14 @@ export default function MyApp(props) {
           setDisplayLoading={setDisplayLoading}
         />
       )}
+      {modalRules && <ModalRules setModalRules={setModalRules} />}
       {displayLoading && <Loading></Loading>}
       <div id="menu">
-        <div id="newGame" onClick={() => setModalNewGame(true)}>
+        <div className="Dashboard_boutonMenu" onClick={() => setModalNewGame(true)}>
           New Game
+        </div>
+        <div className="Dashboard_boutonMenu" onClick={() => setModalRules(true)}>
+          Rules
         </div>
       </div>
       <div

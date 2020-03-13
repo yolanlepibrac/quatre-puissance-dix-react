@@ -265,7 +265,7 @@ export default function GameInterface(props) {
             <ColumnPlayer
               playerIsMe={isPlayer1()}
               playerIs1={true}
-              name={"Player 1 : " + props.user.name}
+              name={"Player 1 : " + (isPlayer1() ? props.user.name : player2.name)}
               tabOfVectors={props.game.vectors1}
               hoveredBoules={hoveredBoules0}
               color={Constantes.colorPlayer1}
@@ -274,7 +274,7 @@ export default function GameInterface(props) {
             <ColumnPlayer
               playerIsMe={!isPlayer1()}
               playerIs1={false}
-              name={"Player 2 : " + player2.name}
+              name={"Player 2 : " + (!isPlayer1() ? props.user.name : player2.name)}
               tabOfVectors={props.game.vectors2}
               hoveredBoules={hoveredBoules1}
               color={Constantes.colorPlayer2}
