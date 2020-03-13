@@ -11,8 +11,12 @@ import Loading from "./Loading";
 import "./GameInterface.css";
 
 export default function GameInterface(props) {
-  const [currentVector, setCurrentVector] = useState(initializeVector(props.game.dimensions - 1));
-  const [canvasAxes, setCanvasAxes] = useState(props.game.dimensions > 2 ? [0, 1, props.game.dimensions - 1] : [0, 1]);
+  const [currentVector, setCurrentVector] = useState(
+    initializeVector(props.game.dimensions - 1)
+  );
+  const [canvasAxes, setCanvasAxes] = useState(
+    props.game.dimensions > 2 ? [0, 1, props.game.dimensions - 1] : [0, 1]
+  );
   const [hoveredBoules0, setHoveredBoules0] = useState([]);
   const [hoveredBoules1, setHoveredBoules1] = useState([]);
   const [displayLoading, setDisplayLoading] = useState(true);
@@ -21,7 +25,10 @@ export default function GameInterface(props) {
   const [stateTest, setStateTest] = useState(0);
   const socket = socketIOClient(Constantes.server);
 
-  const secondPlayer = props.game.player1 === props.user.email ? props.game.player2 : props.game.player1;
+  const secondPlayer =
+    props.game.player1 === props.user.email
+      ? props.game.player2
+      : props.game.player1;
 
   useEffect(() => {
     setDisplayLoading(false);
@@ -93,11 +100,19 @@ export default function GameInterface(props) {
       }
     }
 
-    let myVectors = props.game.player1 === props.user.email ? props.game.vectors1 : props.game.vectors2;
-    let otherVectors = props.game.player1 === props.user.email ? props.game.vectors2 : props.game.vectors1;
+    let myVectors =
+      props.game.player1 === props.user.email
+        ? props.game.vectors1
+        : props.game.vectors2;
+    let otherVectors =
+      props.game.player1 === props.user.email
+        ? props.game.vectors2
+        : props.game.vectors1;
     if (myVectors.length > otherVectors.length) {
       setDisplayLoading(false);
-      alert("Something went wrong, somebody have played to much before other player played");
+      alert(
+        "Something went wrong, somebody have played to much before other player played"
+      );
       return;
     }
 
@@ -133,7 +148,10 @@ export default function GameInterface(props) {
   }
 
   function playerToPlay() {
-    if ((isPlayer1() && props.game.player1ToPlay) || (!isPlayer1() && !props.game.player1ToPlay)) {
+    if (
+      (isPlayer1() && props.game.player1ToPlay) ||
+      (!isPlayer1() && !props.game.player1ToPlay)
+    ) {
       return true;
     } else {
       return false;
@@ -199,10 +217,18 @@ export default function GameInterface(props) {
         while (
           vectorHelper.vectorContain(
             myVectors,
-            vectorHelper.vectorAddition(vector, vectorHelper.vectorMultiply(difference, k))
+            vectorHelper.vectorAddition(
+              vector,
+              vectorHelper.vectorMultiply(difference, k)
+            )
           )
         ) {
-          winVectors.push(vectorHelper.vectorAddition(vector, vectorHelper.vectorMultiply(difference, k)));
+          winVectors.push(
+            vectorHelper.vectorAddition(
+              vector,
+              vectorHelper.vectorMultiply(difference, k)
+            )
+          );
           numberAlign++;
           k++;
         }
@@ -211,10 +237,18 @@ export default function GameInterface(props) {
         while (
           vectorHelper.vectorContain(
             myVectors,
-            vectorHelper.vectorAddition(vector, vectorHelper.vectorMultiply(difference, l))
+            vectorHelper.vectorAddition(
+              vector,
+              vectorHelper.vectorMultiply(difference, l)
+            )
           )
         ) {
-          winVectors.push(vectorHelper.vectorAddition(vector, vectorHelper.vectorMultiply(difference, l)));
+          winVectors.push(
+            vectorHelper.vectorAddition(
+              vector,
+              vectorHelper.vectorMultiply(difference, l)
+            )
+          );
           numberAlign++;
           l--;
         }
@@ -239,7 +273,8 @@ export default function GameInterface(props) {
   }
 
   function setHover(key, player, bool) {
-    let hoveredBoulesTmp = player === 0 ? hoveredBoules0.slice() : hoveredBoules1.slice();
+    let hoveredBoulesTmp =
+      player === 0 ? hoveredBoules0.slice() : hoveredBoules1.slice();
     if (bool) {
       hoveredBoulesTmp.push(key);
     } else {
@@ -265,7 +300,9 @@ export default function GameInterface(props) {
             <ColumnPlayer
               playerIsMe={isPlayer1()}
               playerIs1={true}
-              name={"Player 1 : " + (isPlayer1() ? props.user.name : player2.name)}
+              name={
+                "Player 1 : " + (isPlayer1() ? props.user.name : player2.name)
+              }
               tabOfVectors={props.game.vectors1}
               hoveredBoules={hoveredBoules0}
               color={Constantes.colorPlayer1}
@@ -274,7 +311,9 @@ export default function GameInterface(props) {
             <ColumnPlayer
               playerIsMe={!isPlayer1()}
               playerIs1={false}
-              name={"Player 2 : " + (!isPlayer1() ? props.user.name : player2.name)}
+              name={
+                "Player 2 : " + (!isPlayer1() ? props.user.name : player2.name)
+              }
               tabOfVectors={props.game.vectors2}
               hoveredBoules={hoveredBoules1}
               color={Constantes.colorPlayer2}
@@ -333,7 +372,9 @@ export default function GameInterface(props) {
                         </div>
                       </div>
                     ) : (
-                      <div id="GameInterface_BottomTextWait">Wait for the second player to play</div>
+                      <div id="GameInterface_BottomTextWait">
+                        Wait for the second player to play
+                      </div>
                     )}
                   </div>
                 ) : (
@@ -342,12 +383,14 @@ export default function GameInterface(props) {
                     style={{
                       fontSize: 30,
                       color:
-                        (props.game.winner1 && isPlayer1()) || (!props.game.winner1 && !isPlayer1())
+                        (props.game.winner1 && isPlayer1()) ||
+                        (!props.game.winner1 && !isPlayer1())
                           ? Constantes.colorApp1
                           : Constantes.colorApp3
                     }}
                   >
-                    {(props.game.winner1 && isPlayer1()) || (!props.game.winner1 && !isPlayer1())
+                    {(props.game.winner1 && isPlayer1()) ||
+                    (!props.game.winner1 && !isPlayer1())
                       ? "You win"
                       : "You loose"}
                   </div>
@@ -406,9 +449,17 @@ function CoordinateButton(props) {
       ? Constantes.colorAxe2.color2
       : Constantes.colorAxe1.color2;
   let background = selected
-    ? "linear-gradient(to bottom, " + backgroundColor + " 5%,  " + backgroundColor2 + " 100%)"
+    ? "linear-gradient(to bottom, " +
+      backgroundColor +
+      " 5%,  " +
+      backgroundColor2 +
+      " 100%)"
     : "linear-gradient(to bottom, rgba(235,235,235,1) 5%,  rgba(200,200,200,1) 100%)";
-  let color = selected ? "rgba(235, 235, 235,1)" : active ? "rgba(100, 100, 100,1)" : "rgba(180,180,180,1)";
+  let color = selected
+    ? "rgba(235, 235, 235,1)"
+    : active
+    ? "rgba(100, 100, 100,1)"
+    : "rgba(180,180,180,1)";
 
   return (
     <div
@@ -416,7 +467,9 @@ function CoordinateButton(props) {
       style={{
         width: "100%",
         height: 30,
-        boxShadow: active ? "0px 1px 0px 0px #999999" : "0px 0px 0px 0px #1c1b18",
+        boxShadow: active
+          ? "0px 1px 0px 0px #999999"
+          : "0px 0px 0px 0px #1c1b18",
         borderRadius: 4,
         background: background,
         display: "flex",
@@ -475,7 +528,8 @@ function CoordinateZ() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 15
+          fontSize: 13,
+          lineHeight: 1
         }}
       >
         Automatic Value
@@ -498,7 +552,12 @@ function InputCoordinate(props) {
         min="1"
         max={props.dimensions}
         onChange={e => setInputValue(e)}
-        style={{ width: "100%", height: 30, fontSize: 16, color: "rgba(140,140,140,1)" }}
+        style={{
+          width: "100%",
+          height: 30,
+          fontSize: 16,
+          color: "rgba(140,140,140,1)"
+        }}
         value={value + 1}
       ></input>
     </div>

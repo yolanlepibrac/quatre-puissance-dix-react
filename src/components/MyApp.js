@@ -34,7 +34,10 @@ function MyApp() {
     <div id="appContainer">
       <YolanHeader
         className="MyButton"
-        style={{ backgroundImage: "linear-gradient(180deg, rgba(65, 181, 127, 1), rgb(70, 200, 140))" }}
+        style={{
+          backgroundImage:
+            "linear-gradient(180deg, rgba(65, 181, 127, 1), rgb(70, 200, 140))"
+        }}
         height={50}
         user={user}
       >
@@ -46,12 +49,19 @@ function MyApp() {
         )}
         {connected && user.name && (
           <div id="username">
-            <div style={{}}>Connected as</div>
+            <div style={{ height: 16 }}>Connected as</div>
             <div>{user.name}</div>
           </div>
         )}
       </YolanHeader>
-      <div style={{ height: "calc( 100vh - 50px )", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <div
+        style={{
+          height: "calc( 100vh - 50px )",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
         <Switch>
           <Route exact path="/login">
             <Connect navigateHome={data => navigateHome(data)}></Connect>
