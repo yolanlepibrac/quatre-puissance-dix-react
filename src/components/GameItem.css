@@ -1,0 +1,153 @@
+#containerGameItem {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-size: 600% 600%;
+}
+
+#containerGameItem:hover {
+  animation: translate-background ease-in-out 1.2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes translate-background {
+  0% {
+    background-position: 0 50%;
+  }
+  50%,
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+#GameItem_top {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
+}
+
+#gameItem_numberDimensionsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+#gameItem_numberDimensions {
+  width: 100px;
+  height: 100px;
+  font-size: 70px;
+  border-radius: 50%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(230, 230, 230, 1);
+  color: rgba(230, 230, 230, 1);
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+#containerGameItem:hover #gameItem_numberDimensions {
+  border-color: white;
+  color: white;
+  box-shadow: 0px 0px 3px 2px rgba(255, 255, 255, 0.5);
+}
+
+#gameItem_legendDimensions {
+  font-size: 15px;
+  color: rgba(230, 230, 230, 1);
+  position: absolute;
+  bottom: -10px;
+  right: -70px;
+  font-weight: bold;
+}
+
+#containerGameItem:hover #gameItem_legendDimensions {
+  color: white;
+  text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.5);
+}
+
+.GameItem_name {
+  width: 45%;
+  overflow: hidden;
+}
+
+#GameItem_versus {
+  font-size: 150%;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 2px 2px 2px black;
+}
+
+#GameItem_background {
+  position: relative;
+  height: calc(100% - 70px);
+}
+
+#GameItem_boulesimages {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  height: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.GameItem_boulesimageSide {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+#GameItem_bouleslegendLeft {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  font-size: 16px;
+  margin-bottom: 3px;
+  width: 100%;
+}
+
+#GameItem_bouleslegendRight {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  font-size: 16px;
+  margin-bottom: 3px;
+  width: 100%;
+}
+
+.GameItem_image {
+  opacity: 0.5;
+}
+
+#GameItem_bottom {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
+  position: relative;
+}
+
+.GameItem_legend {
+  font-weight: bold;
+  font-size: 15px;
+}

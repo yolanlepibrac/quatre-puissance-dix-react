@@ -5,6 +5,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Sphere from "./Sphere";
 import gameHelper from "./gameHelper";
 import Constantes from "./Constantes";
+import vectorHelper from "./vectorHelper";
 
 extend({ OrbitControls });
 
@@ -25,7 +26,11 @@ export default function CanvasContent(props) {
               index={key}
               position={vector}
               canvasAxes={props.canvasAxes}
-              color={Constantes.colorPlayer1}
+              color={
+                props.game.finish && vectorHelper.vectorContain(props.game.vectorsWinner, vector)
+                  ? Constantes.colorApp1
+                  : Constantes.colorPlayer1
+              }
               hoveredColor={"rgba(255, 105, 180,1)"}
               offset={0.01}
               setHover={(key, bool) => props.setHover(key, 0, bool)}
@@ -40,7 +45,11 @@ export default function CanvasContent(props) {
               index={key}
               position={vector}
               canvasAxes={props.canvasAxes}
-              color={Constantes.colorPlayer2}
+              color={
+                props.game.finish && vectorHelper.vectorContain(props.game.vectorsWinner, vector)
+                  ? Constantes.colorApp1
+                  : Constantes.colorPlayer2
+              }
               hoveredColor={"rgba(255, 174, 0,1)"}
               offset={-0.01}
               setHover={(key, bool) => props.setHover(key, 1, bool)}
@@ -74,7 +83,7 @@ export default function CanvasContent(props) {
           color={Constantes.colorAxe3.color1}
         ></Line>
       )}
-      <orbitControls args={[camera, domElement]} />
+      {props.orbit && <orbitControls args={[camera, domElement]} />}
     </>
   );
 }
