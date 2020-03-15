@@ -24,7 +24,7 @@ const ModalRules: FunctionComponent<Props> = props => {
     " 8 - You can changed 3D representation by chose 3 dimensions to display",
     " 9 - You can changed 3D representation by chose 2 dimensions to display",
     "10 - You can changed 3D representation by chose 1 dimensions to display",
-    "11 - Increment the value on axes you want",
+    "11 - Increment the value on axes you want, the Z value is automacally filled : If another vector exists with the same coordinates, value Z will be incremented",
     "12 - Set the new vector",
     "13 - New vector appear in your table",
     "14 - Wait for 2nd player to play",
@@ -32,7 +32,7 @@ const ModalRules: FunctionComponent<Props> = props => {
     " 1 - Three vectors are aligned if the differences between them is proporationnal",
     " 1 - Example : following vectors are aligned",
     " 1 - Example : following vectors are NOT aligned",
-    " 2 - Two vectors are side by side if the difference between them is less or equal to 1, in each dimension",
+    " 2 - Two vectors are side by side if the absolute value of the difference between them is less or equal to 1, in each dimension",
     " 2 - Example : following vectors are side by side",
     " 2 - Example : following vectors are NOT side by side"
   ];
