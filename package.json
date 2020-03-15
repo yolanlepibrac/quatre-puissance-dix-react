@@ -1,5 +1,6 @@
 {
-  "name": "quatre-puissance-dix",
+  "name": "power-four-power-ten",
+  "homepage": "http://yolan-pibrac.com/power-four-power-ten",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -5,7 +5,7 @@ import GameInterface from "./GameInterface";
 import Connect from "./Connect";
 import YolanHeader from "./YolanHeader";
 import GameRouter from "./GameRouter";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, HashRouter } from "react-router-dom";
 import "./MyApp.css";
 
 function MyApp() {
@@ -27,7 +27,7 @@ function MyApp() {
   function disconnect() {
     localStorage.setItem("email", undefined);
     setConnected(false);
-    history.push("/");
+    history.push("/login");
   }
 
   return (
@@ -63,6 +63,9 @@ function MyApp() {
       >
         <Switch>
           <Route exact path="/">
+            <Redirect to="/login"></Redirect>
+          </Route>
+          <Route path="/login">
             <Connect navigateHome={data => navigateHome(data)}></Connect>
           </Route>
           <GameRouter user={user} connected={connected} games={games} />

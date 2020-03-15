@@ -25,7 +25,7 @@ export default function Connect(props) {
             });
         })
         .catch(error => {
-          alert("Impossible to do");
+          alert("Impossible to connect, try again");
         })
         .then(() => {
           setDisplayLoading(false);
