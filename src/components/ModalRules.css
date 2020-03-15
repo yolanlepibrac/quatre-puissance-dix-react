@@ -74,13 +74,13 @@
 }
 
 #modalRules_imageContainer {
-  width: 70vw;
   height: 70vh;
   background-color: white;
+  margin-right: 50px;
 }
 
 .modalRules_image {
-  width: 70vw;
+  width: 100%;
   height: 70vh;
 }
 

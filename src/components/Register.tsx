@@ -18,6 +18,7 @@ const Register: FunctionComponent<Props> = props => {
   function sendRegister() {
     if (password !== cpassword) {
       alert("password and confirmation does not match");
+      return;
     }
     props.setDisplayLoading(true);
     API.register(email.toLowerCase(), password, username.toLowerCase()).then((dataUser: any) => {

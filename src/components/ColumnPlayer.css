@@ -1,0 +1,18 @@
+#ColumnPlayer {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  height: 100%;
+  max-height: calc(100vh - 90px);
+  margin: 10px;
+  margin-top: 0px;
+  padding: 0px;
+  background-color: white;
+  box-shadow: 2px 2px 2px 1px rgba(100, 100, 100, 0.7);
+}
+
+#ColumnPlayer_top {
+  color: white;
+  font-weight: bold;
+  padding: 8px;
+}

@@ -1,13 +1,15 @@
 import React, { FunctionComponent, useState, useEffect, useRef } from "react";
 import "./ModalRules.css";
+import Surounded from "./Surounded";
 
 interface Props {
   setModalRules: any;
 }
 
 const ModalRules: FunctionComponent<Props> = props => {
-  const [rulesImage, setRuleImage] = useState(3);
+  const [rulesImage, setRuleImage] = useState(0);
   const myRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const text = [
     " 1 - There is one axe for each dimension",
@@ -25,8 +27,21 @@ const ModalRules: FunctionComponent<Props> = props => {
     "11 - Increment the value on axes you want",
     "12 - Set the new vector",
     "13 - New vector appear in your table",
-    "14 - Wait for 2nd player to play"
+    "14 - Wait for 2nd player to play",
+    " To win you have to align side by side (Ndimensions + 2) vectors",
+    " 1 - Three vectors are aligned if the differences between them is proporationnal",
+    " 1 - Example : following vectors are aligned",
+    " 1 - Example : following vectors are NOT aligned",
+    " 2 - Two vectors are side by side if the difference between them is less or equal to 1, in each dimension",
+    " 2 - Example : following vectors are side by side",
+    " 2 - Example : following vectors are NOT side by side"
   ];
+
+  useEffect(() => {
+    if (containerRef && containerRef.current) {
+      containerRef.current.focus();
+    }
+  }, []);
 
   const handleScroll = (e: any) => {
     if (myRef && myRef.current) {
@@ -35,33 +50,71 @@ const ModalRules: FunctionComponent<Props> = props => {
   };
 
   const setImage = (scrollPosition: number) => {
-    let imageValue = Math.round((scrollPosition + 300) / 200);
+    let imageValue;
+    if (scrollPosition === 0) {
+      imageValue = 0;
+    } else {
+      imageValue = Math.trunc((scrollPosition - 1) / 100 + 1);
+    }
     console.log(imageValue);
-    if (imageValue > 2 && imageValue < 19 && imageValue !== rulesImage) {
+    if (imageValue >= 0 && imageValue < 23 && imageValue !== rulesImage) {
       setRuleImage(imageValue);
     }
   };
 
   const scrollToGamePlay = () => {
-    console.log("");
+    if (myRef && myRef.current) {
+      myRef.current.scrollTo({ top: 0 });
+    }
   };
 
   const scrollToToWin = () => {
-    console.log("");
+    if (myRef && myRef.current) {
+      myRef.current.scrollTo({ top: 1600 });
+    }
+  };
+
+  const setScrollArrow = (event: KeyboardEvent) => {
+    if (event.which === 40) {
+      if (myRef && myRef.current) {
+        myRef.current.scrollTo({ top: myRef.current.scrollTop + 100 });
+      }
+    }
+    if (event.which === 38) {
+      if (myRef && myRef.current) {
+        myRef.current.scrollTo({ top: myRef.current.scrollTop - 100 });
+      }
+    }
   };
 
   return (
     <div>
-      <div id="modalRules">
+      <div
+        id="modalRules"
+        tabIndex={0}
+        ref={containerRef}
+        onKeyDown={(e: any) => {
+          setScrollArrow(e);
+        }}
+      >
         <div id="ModalRules_quitRules" onClick={() => props.setModalRules(false)}>
-          <img src={require("../assets/cross.png")} width="50" className="" />
+          <img src={require("../assets/crossB.png")} width="50" className="" />
         </div>
+
         <div id="modalRules_container">
           <div id="modalRules_Menu">
-            <div className="modalRules_Title" onClick={scrollToGamePlay}>
+            <div
+              className="modalRules_Title"
+              onClick={scrollToGamePlay}
+              style={{ fontWeight: myRef.current && myRef.current.scrollTop < 1600 ? "bold" : "normal" }}
+            >
               {" I - Gameplay"}
             </div>
-            <div className="modalRules_Title" onClick={scrollToToWin}>
+            <div
+              className="modalRules_Title"
+              onClick={scrollToToWin}
+              style={{ fontWeight: myRef.current && myRef.current.scrollTop >= 1600 ? "bold" : "normal" }}
+            >
               {"II - How to win"}
             </div>
           </div>
@@ -74,11 +127,12 @@ const ModalRules: FunctionComponent<Props> = props => {
                 handleScroll(e);
               }}
             >
-              <div id="modalRules_overflow"></div>
+              <div id="modalRules_overflow" style={{ height: "calc(100vh + " + text.length * 100 + "px)" }}></div>
             </div>
             <div id="modalRules_textContainer">{text[rulesImage]}</div>
             <div id="modalRules_imageContainer">
               <img src={require("../assets/" + rulesImage.toString() + ".png")} className="modalRules_image" />
+              {/* <Surounded style={{ width: 200, height: 200 }}></Surounded> */}
             </div>
           </div>
         </div>

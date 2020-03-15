@@ -1,34 +1,23 @@
 import React, { useEffect } from "react";
 import vectorHelper from "./vectorHelper";
 import Constantes from "./Constantes";
+import "./ColumnPlayer.css";
 
 import gameHelper from "./gameHelper";
+import { constants } from "buffer";
 
 export default function ColumnPlayer(props) {
   return (
-    <div
-      id="ColumnPlayer"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: "25%",
-        height: "100%",
-        maxHeight: "calc(100vh - 90px)",
-        margin: 10,
-        marginTop: 0,
-        padding: 5,
-        backgroundColor: "white",
-        boxShadow: "2px 2px 2px 1px rgba(100, 100, 100, 0.7)"
-      }}
-    >
+    <div id="ColumnPlayer">
       <div
+        id="ColumnPlayer_top"
         style={{
           marginBottom: 10,
-          color: props.playerIs1 ? Constantes.colorPlayer1 : Constantes.colorPlayer2,
-          borderRadius: 7,
-          borderWidth: props.playerIsMe ? 2 : 0,
+          backgroundColor: props.playerIs1 ? Constantes.colorPlayer1 : Constantes.colorPlayer2,
+          borderWidth: 0,
+          borderBottomWidth: 5,
           borderStyle: "solid",
-          borderColor: props.playerIs1 ? Constantes.colorPlayer1 : Constantes.colorPlayer2
+          borderColor: props.playerIsMe ? "black" : "white"
         }}
       >
         {props.name}

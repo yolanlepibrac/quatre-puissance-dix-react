@@ -27,7 +27,7 @@ function MyApp() {
   function disconnect() {
     localStorage.setItem("email", undefined);
     setConnected(false);
-    history.push("/login");
+    history.push("/");
   }
 
   return (
@@ -35,8 +35,7 @@ function MyApp() {
       <YolanHeader
         className="MyButton"
         style={{
-          backgroundImage:
-            "linear-gradient(180deg, rgba(65, 181, 127, 1), rgb(70, 200, 140))"
+          backgroundImage: "linear-gradient(180deg, rgba(65, 181, 127, 1), rgb(70, 200, 140))"
         }}
         height={50}
         user={user}
@@ -63,7 +62,7 @@ function MyApp() {
         }}
       >
         <Switch>
-          <Route exact path="/login">
+          <Route exact path="/">
             <Connect navigateHome={data => navigateHome(data)}></Connect>
           </Route>
           <GameRouter user={user} connected={connected} games={games} />

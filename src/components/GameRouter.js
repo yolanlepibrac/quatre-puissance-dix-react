@@ -46,7 +46,7 @@ function GameRouter(props) {
   }
 
   function disconnect() {
-    history.push("/login");
+    history.push("/");
   }
 
   function setGamesToState(newGame) {
@@ -68,11 +68,11 @@ function GameRouter(props) {
     <div id="appContainer">
       <Switch>
         <Route exact path="/home">
-          {!props.connected && <Redirect to="/login"></Redirect>}
+          {!props.connected && <Redirect to="/"></Redirect>}
           <Dashboard navigateGame={navigateGame} user={props.user} games={games} setGame={setGamesToState}></Dashboard>
         </Route>
         <Route exact path="/game">
-          {!props.connected && <Redirect to="/login"></Redirect>}
+          {!props.connected && <Redirect to="/"></Redirect>}
           <GameInterface game={currentGame} quitGame={quitGame} user={props.user}></GameInterface>
         </Route>
       </Switch>
