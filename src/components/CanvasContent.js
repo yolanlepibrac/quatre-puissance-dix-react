@@ -295,7 +295,7 @@ const Plane = props => {
         Math.PI / 2
       )}
     >
-      <planeBufferGeometry attach="geometry" args={[props.size[0], props.size[1], 32, 32]} />
+      <planeBufferGeometry attach="geometry" args={[props.size[0], props.size[1]]} />
       <meshStandardMaterial attach="material" transparent={true} opacity={0.3} side={THREE.DoubleSide} />
     </mesh>
   );
