@@ -212,21 +212,21 @@ const GridPlane = props => {
   if (props.canvasAxes.length === 3) {
     for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
-        rotation: [0, 0, 1],
+        rotation: [0, 0, Math.PI / 2],
         deplacement: [props.size / 2, props.size / 2, index],
         size: [props.size, props.size]
       });
     }
     for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
-        rotation: [0, 1, 0],
+        rotation: [0, Math.PI / 2, 0],
         deplacement: [index, props.size / 2, props.size / 2],
         size: [props.size, props.size]
       });
     }
     for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
-        rotation: [1, 0, 0],
+        rotation: [Math.PI / 2, 0, 0],
         deplacement: [props.size / 2, index, props.size / 2],
         size: [props.size, props.size]
       });
@@ -236,21 +236,21 @@ const GridPlane = props => {
   if (props.canvasAxes.length === 2) {
     for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
-        rotation: [0, 0, 1],
+        rotation: [0, 0, Math.PI / 2],
         deplacement: [props.size / 2, 1 / 2, index],
         size: [1, props.size]
       });
     }
     for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
-        rotation: [0, 1, 0],
+        rotation: [0, Math.PI / 2, 0],
         deplacement: [index, 1 / 2, props.size / 2],
         size: [props.size, 1]
       });
     }
     for (let index = 0; index <= 1; index++) {
       tab.push({
-        rotation: [1, 0, 0],
+        rotation: [Math.PI / 2, 0, 0],
         deplacement: [props.size / 2, index, props.size / 2],
         size: [props.size, props.size]
       });
@@ -260,21 +260,21 @@ const GridPlane = props => {
   if (props.canvasAxes.length === 1) {
     for (let index = 0; index <= 1; index++) {
       tab.push({
-        rotation: [0, 0, 1],
+        rotation: [0, 0, Math.PI / 2],
         deplacement: [props.size / 2, 1 / 2, index],
         size: [1, props.size]
       });
     }
     for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
-        rotation: [0, 1, 0],
+        rotation: [0, Math.PI / 2, 0],
         deplacement: [index, 1 / 2, 1 / 2],
         size: [1, 1]
       });
     }
     for (let index = 0; index <= 1; index++) {
       tab.push({
-        rotation: [1, 0, 0],
+        rotation: [Math.PI / 2, 0, 0],
         deplacement: [props.size / 2, index, 1 / 2],
         size: [props.size, 1]
       });
@@ -288,7 +288,15 @@ const GridPlane = props => {
 
 const Plane = props => {
   return (
-    <mesh
+    <mesh position={[props.deplacement[0], props.deplacement[1], props.deplacement[2]]} rotation={props.rotation}>
+      <planeBufferGeometry attach="geometry" args={[props.size[0], props.size[1]]} />
+      <meshStandardMaterial attach="material" side={THREE.DoubleSide} opacity={0.3} transparent={true} />
+    </mesh>
+  );
+};
+
+{
+  /* <mesh
       position={[props.deplacement[0], props.deplacement[1], props.deplacement[2]]}
       quaternion={new THREE.Quaternion().setFromAxisAngle(
         new THREE.Vector3(props.rotation[0], props.rotation[1], props.rotation[2]),
@@ -297,6 +305,5 @@ const Plane = props => {
     >
       <planeBufferGeometry attach="geometry" args={[props.size[0], props.size[1]]} />
       <meshStandardMaterial attach="material" transparent={true} opacity={0.3} side={THREE.DoubleSide} />
-    </mesh>
-  );
-};
+    </mesh> */
+}
