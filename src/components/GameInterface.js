@@ -80,7 +80,7 @@ export default function GameInterface(props) {
         );
         return;
       }
-      if (currentVector[index] <= 0) {
+      if (currentVector[index] < 0) {
         setDisplayLoading(false);
         alert("The minimum of value for each dimension of the vector played is 1");
         return;
