@@ -17,10 +17,53 @@ export default function ColumnPlayer(props) {
           borderWidth: 0,
           borderBottomWidth: 5,
           borderStyle: "solid",
-          borderColor: props.playerIsMe ? "black" : "white"
+          borderColor: "white",
+          position: "relative",
+          height: 40,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
         }}
       >
-        {props.name}
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <div
+            style={{
+              height: 20,
+              position: "relative"
+            }}
+          >
+            <div
+              style={{
+                height: 40,
+                position: "relative",
+                top: 0,
+                left: 0,
+                zIndex: 3
+              }}
+            >
+              {props.name}
+            </div>
+
+            <div
+              style={{
+                height: 10,
+                backgroundColor: props.playerIsMe ? Constantes.colorApp1 : "rgba(0,0,0,0)",
+                position: "absolute",
+                top: 10,
+                left: 0,
+                width: "100%",
+                zIndex: 2
+              }}
+            ></div>
+          </div>
+        </div>
       </div>
       <div style={{ width: "100%", display: "flex", flexDirection: "row", marginBottom: 10, minHeight: 20 }}>
         {props.tabOfVectors &&
