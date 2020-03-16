@@ -72,14 +72,14 @@ export default function CanvasContent(props) {
       {props.canvasAxes.length > 1 && (
         <Line
           point0={[0, 0, 0]}
-          point1={[0, gameHelper.sizeMap(props.game.dimensions), 0]}
+          point1={[0, 0, gameHelper.sizeMap(props.game.dimensions)]}
           color={Constantes.colorAxe2.color1}
         ></Line>
       )}
       {props.canvasAxes.length > 2 && (
         <Line
           point0={[0, 0, 0]}
-          point1={[0, 0, gameHelper.sizeMap(props.game.dimensions)]}
+          point1={[0, gameHelper.sizeMap(props.game.dimensions), 0]}
           color={Constantes.colorAxe3.color1}
         ></Line>
       )}
@@ -102,16 +102,16 @@ function GridLine(props) {
     for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
       for (let indexDim2 = 0; indexDim2 <= gameHelper.sizeMap(props.game.dimensions); indexDim2++) {
         tab.push([
-          [indexDim1, 0, indexDim2],
-          [indexDim1, gameHelper.sizeMap(props.game.dimensions), indexDim2]
+          [indexDim1, indexDim2, 0],
+          [indexDim1, indexDim2, gameHelper.sizeMap(props.game.dimensions)]
         ]);
       }
     }
     for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
       for (let indexDim2 = 0; indexDim2 <= gameHelper.sizeMap(props.game.dimensions); indexDim2++) {
         tab.push([
-          [indexDim1, indexDim2, 0],
-          [indexDim1, indexDim2, gameHelper.sizeMap(props.game.dimensions)]
+          [indexDim1, 0, indexDim2],
+          [indexDim1, gameHelper.sizeMap(props.game.dimensions), indexDim2]
         ]);
       }
     }
@@ -120,24 +120,24 @@ function GridLine(props) {
     for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
       for (let indexDim2 = 0; indexDim2 <= 1; indexDim2++) {
         tab.push([
-          [0, indexDim1, indexDim2],
-          [gameHelper.sizeMap(props.game.dimensions), indexDim1, indexDim2]
+          [0, indexDim2, indexDim1],
+          [gameHelper.sizeMap(props.game.dimensions), indexDim2, indexDim1]
         ]);
       }
     }
     for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
       for (let indexDim2 = 0; indexDim2 <= 1; indexDim2++) {
         tab.push([
-          [indexDim1, 0, indexDim2],
-          [indexDim1, gameHelper.sizeMap(props.game.dimensions), indexDim2]
+          [indexDim1, indexDim2, 0],
+          [indexDim1, indexDim2, gameHelper.sizeMap(props.game.dimensions)]
         ]);
       }
     }
     for (let indexDim1 = 0; indexDim1 <= gameHelper.sizeMap(props.game.dimensions); indexDim1++) {
       for (let indexDim2 = 0; indexDim2 <= gameHelper.sizeMap(props.game.dimensions); indexDim2++) {
         tab.push([
-          [indexDim1, indexDim2, 0],
-          [indexDim1, indexDim2, 1]
+          [indexDim1, 0, indexDim2],
+          [indexDim1, 1, indexDim2]
         ]);
       }
     }
@@ -234,25 +234,25 @@ const GridPlane = props => {
   }
 
   if (props.canvasAxes.length === 2) {
-    for (let index = 0; index <= 1; index++) {
-      tab.push({
-        rotation: [0, 0, 1],
-        deplacement: [props.size / 2, props.size / 2, index],
-        size: [props.size, props.size]
-      });
-    }
     for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
-        rotation: [0, 1, 0],
-        deplacement: [index, props.size / 2, 1 / 2],
+        rotation: [0, 0, 1],
+        deplacement: [props.size / 2, 1 / 2, index],
         size: [1, props.size]
       });
     }
     for (let index = 0; index <= gameHelper.sizeMap(props.dimensions); index++) {
       tab.push({
-        rotation: [1, 0, 0],
-        deplacement: [props.size / 2, index, 1 / 2],
+        rotation: [0, 1, 0],
+        deplacement: [index, 1 / 2, props.size / 2],
         size: [props.size, 1]
+      });
+    }
+    for (let index = 0; index <= 1; index++) {
+      tab.push({
+        rotation: [1, 0, 0],
+        deplacement: [props.size / 2, index, props.size / 2],
+        size: [props.size, props.size]
       });
     }
   }
@@ -296,7 +296,7 @@ const Plane = props => {
       )}
     >
       <planeBufferGeometry attach="geometry" args={[props.size[0], props.size[1], 32, 32]} />
-      <meshStandardMaterial attach="material" transparent={true} opacity={0.2} side={THREE.DoubleSide} />
+      <meshStandardMaterial attach="material" transparent={true} opacity={0.7} side={THREE.DoubleSide} />
     </mesh>
   );
 };

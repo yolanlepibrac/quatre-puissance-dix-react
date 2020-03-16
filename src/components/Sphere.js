@@ -22,7 +22,7 @@ export default function Sphere(props) {
       {...props}
       ref={mesh}
       scale={active ? [1.25, 1.25, 1.25] : [1.2, 1.2, 1.2]}
-      position={props.position}
+      position={[props.position[0], props.position[2], props.position[1]]}
       onClick={e => setActive(!active)}
       onPointerOver={e => setHoverFunction(props.index, true)}
       onPointerOut={e => setHoverFunction(props.index, false)}
